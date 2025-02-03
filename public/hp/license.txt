@@ -1,0 +1,8 @@
+Model Information:
+* title:	Windows 10 Laptop
+* source:	https://sketchfab.com/3d-models/windows-10-laptop-6734c1552bcd4b1b8bab405b8cd23773
+* author:	CG Robot (https://sketchfab.com/cgrobot)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
