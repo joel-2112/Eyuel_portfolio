@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { styles } from "../styles";
 import { Link } from "react-router-dom";
-import { logo, menu, close } from "../assets";
+import {  menu, close } from "../assets";
+import image from "../assets/image.png";
 import { navLinks } from "../constants/index";
 
 const Navbar = () => {
@@ -37,22 +38,26 @@ const Navbar = () => {
           onClick={() => {
             setActive("");
             window.scrollTo(0, 0);
-          }}
-        >
-          <img src={logo} alt="logo" className="w-10 h-10 object-contain" />
-          <p
-            className={`font-semibold text-[20px] tracking-wide transition-all duration-300 ${
+            }}
+            >
+            <img
+              src={image}
+              alt="logo"
+              className="w-10 h-10 object-cover rounded-full"
+            />
+            <p
+              className={`font-semibold text-[20px] tracking-wide transition-all duration-300 ${
               scrolled ? "text-white" : "text-blue-400"
-            }`}
-          >
-            Eyuel{" "}
-            <span className="sm:block hidden text-gray-300">
+              }`}
+            >
+              Eyuel{" "}
+              <span className="sm:block hidden text-gray-300">
               | Full Stack Developer |
-            </span>
-          </p>
-        </Link>
+              </span>
+            </p>
+            </Link>
 
-        {/* Desktop Navigation */}
+            {/* Desktop Navigation */}
         <ul className="list-none sm:flex hidden flex-row gap-8">
           {navLinks.map((link) => (
             <li
