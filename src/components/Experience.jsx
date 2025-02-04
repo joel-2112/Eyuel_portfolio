@@ -18,17 +18,16 @@ const ExperienceCard = ({ experience }) => {
       contentStyle={{
         background: "#ffffff", // White background
         color: "#1a1a1a", // Dark text for contrast
-        border: "1px solid #e0e0e0", // Light border
+        border: "1px solid #e5e7eb", // Light gray border
         borderRadius: "8px", // Rounded corners
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow
       }}
-      contentArrowStyle={{ borderRight: "9px solid #ffffff" }} // White arrow
+      contentArrowStyle={{ borderRight: "10px solid #e5e7eb" }} // Light gray arrow
       date={
         <span style={{ color: "#4a5568", fontSize: "14px", fontWeight: "500" }}>
           {experience.date}
         </span>
       }
-      iconStyle={{ background: experience.iconBg, boxShadow: "0 0 0 4px #fff" }} // Icon background with white border
+      iconStyle={{ background: experience.iconBg, border: "2px solid #e5e7eb" }} // Icon background with light gray border
       icon={
         <div className="flex justify-center items-center w-full h-full">
           <img
@@ -67,16 +66,16 @@ const Experience = () => {
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={`${styles.sectionSubText} text-center text-gray-600`}>
+        <p className={`${styles.sectionSubText} text-center text-gray-500`}>
           What I have done so far
         </p>
-        <h2 className={`${styles.sectionHeadText} text-center text-gray-900`}>
+        <h2 className={`${styles.sectionHeadText} text-center text-gray-500`}>
           Work Experience
         </h2>
       </motion.div>
 
       <div className="mt-20 flex flex-col">
-        <VerticalTimeline lineColor="#e0e0e0"> {/* Light gray timeline line */}
+        <VerticalTimeline lineColor="#e5e7eb"> {/* Light gray timeline line */}
           {experiences.map((experience, index) => (
             <ExperienceCard
               key={`experience-${index}`}
