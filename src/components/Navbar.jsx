@@ -28,7 +28,7 @@ const Navbar = () => {
       className={`${
         styles.paddingX
       } w-full fixed top-0 z-20 flex items-center py-4 transition-all duration-300 ${
-        scrolled ? "bg-blue-900 shadow-lg" : "bg-transparent"
+        scrolled ? "bg-blue-500 shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
@@ -50,9 +50,9 @@ const Navbar = () => {
               scrolled ? "text-white" : "text-blue-400"
               }`}
             >
-              Eyuel{" "}
+              Eyuel
               <span className="sm:block hidden text-gray-300">
-              | Full Stack Developer |
+              | Full Stack developer |
               </span>
             </p>
             </Link>

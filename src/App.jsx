@@ -14,7 +14,6 @@ const App = () => {
     <BrowserRouter>
     <Routes>
     <Route path="/home" element={<Home />} />
-    {/* <Route path="/" element={<Home />} /> */}
     </Routes>
     <div className='relative z-0 bg-gray-100'>
 
@@ -26,7 +25,7 @@ const App = () => {
       <Experience/>
       <Works/>
       <div className='relative z-0'>
-    <Contact/>
+         <Contact/>
       </div>
     </div>
     </BrowserRouter>

@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div
     
-      className="relative w-full h-screen flex flex-col"
+      className="relative w-full h-screen z-30 flex flex-col"
       style={{ backgroundImage: `url(${win})`, backgroundSize: "cover" }}
     >
       {/* Desktop Icons */}
