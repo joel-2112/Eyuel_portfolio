@@ -1,40 +1,33 @@
 import React, { Suspense, useEffect, useState, forwardRef, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
+import * as THREE from "three"; // Import THREE.js
 import CanvasLoader from "../Loader";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const Computers = ({ isMobile }) => {
   const computer = useGLTF("./hp/scene.gltf");
 
   return (
     <mesh>
-      {/* Ambient Light for general brightness */}
       <ambientLight intensity={0.9} />
-
-      {/* Hemisphere Light for natural balance */}
       <hemisphereLight intensity={0.5} groundColor="black" />
-
-      {/* SpotLight for focused brightness */}
       <spotLight
         position={[-20, 50, 10]}
         angle={0.2}
         penumbra={1}
-        intensity={1.5} // Increased intensity
+        intensity={1.5}
         castShadow
         shadow-mapSize={1024}
       />
-
-      {/* Stronger Point Light */}
       <pointLight position={[10, 10, 10]} intensity={2} />
-
-      {/* NEW: Directional Light from the top */}
       <directionalLight
-        position={[0, 10, 0]} // Directly above
-        intensity={2} // Strong light for a clear top view
+        position={[0, 10, 0]}
+        intensity={2}
         castShadow
         shadow-mapSize={2048}
       />
-
       <primitive
         object={computer.scene}
         scale={isMobile ? 21 : 28}
@@ -45,65 +38,123 @@ const Computers = ({ isMobile }) => {
   );
 };
 
-export const ComputersCanvas = forwardRef(({ zoomed, onCameraReset }, ref) => {
+export const ComputersCanvas = forwardRef((_, ref) => {
   const [isMobile, setIsMobile] = useState(false);
   const controlsRef = useRef();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
-    setIsMobile(mediaQuery.matches);
+  const initialCameraPosition = new THREE.Vector3(-40, 0, -1.8);
 
-    const handleMediaQueryChange = (event) => {
-      setIsMobile(event.matches);
-    };
+  const resetCamera = () => {
+    if (controlsRef.current) {
+      const duration = 3.2; // Animation duration in seconds
+      const startPosition = controlsRef.current.object.position.clone();
+      const targetPosition = initialCameraPosition.clone();
 
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
+      let startTime = null;
 
-    return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
-    };
-  }, []);
+      const animate = (time) => {
+        if (!startTime) startTime = time;
+        const progress = Math.min((time - startTime) / (duration * 1000), 1);
 
-  useEffect(() => {
-    if (zoomed && controlsRef.current) {
-      // Reset camera to initial position
-      controlsRef.current.reset();
-      onCameraReset();
+        controlsRef.current.object.position.lerpVectors(
+          startPosition,
+          targetPosition,
+          progress
+        );
 
-      // Zoom in after reset
-      setTimeout(() => {
-        controlsRef.current.target.set(0, 0, 0);
-        controlsRef.current.object.position.set(-10, 5, 2); // Adjust this for zoom effect
+        controlsRef.current.target.lerpVectors(
+          controlsRef.current.target.clone(),
+          new THREE.Vector3(3, 0, 0),
+          progress
+        );
+
         controlsRef.current.update();
-      }, 1000);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      requestAnimationFrame(animate);
     }
-  }, [zoomed, onCameraReset]);
+  };
+
+  const toggleFullScreenAndNavigate = () => {
+    resetCamera(); // Reset first
+    setTimeout(() => {
+      if (controlsRef.current) {
+        controlsRef.current.enabled = false;
+        const duration = 2.2;
+        const initialPosition = controlsRef.current.object.position.clone();
+        const targetPosition = new THREE.Vector3(-10, 5, 2);
+
+        let startTime = null;
+        const animate = (time) => {
+          if (!startTime) startTime = time;
+          const progress = Math.min((time - startTime) / (duration * 1000), 1);
+
+          controlsRef.current.object.position.lerpVectors(
+            initialPosition,
+            targetPosition,
+            progress
+          );
+          controlsRef.current.target.lerpVectors(
+            controlsRef.current.target.clone(),
+            new THREE.Vector3(0, 0, 0),
+            progress
+          );
+          controlsRef.current.update();
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            setTimeout(() => navigate("/home"));
+          }
+        };
+        requestAnimationFrame(animate);
+      }
+    }, 4000); // Delay before zoom-in starts
+  };
 
   return (
-    <Canvas
-      frameloop="demand"
-      shadows
-      dpr={[1, 2]}
-      camera={{ position: [-40, 5, -1.8], fov: 7 }} // Adjusted to show the front side
-      gl={{ preserveDrawingBuffer: true }}
-    >
-      <Suspense fallback={<CanvasLoader />}>
-        <OrbitControls
-          ref={(node) => {
-            controlsRef.current = node;
-            if (ref) ref.current = node;
-          }}
-          enableZoom={true}
-          enableRotate={true}
-          enablePan={true}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={0}
-        />
-        <Computers isMobile={isMobile} />
-      </Suspense>
-
-      <Preload all />
-    </Canvas>
+    <div className="relative w-full h-full">
+      <Canvas
+        frameloop="demand"
+        shadows
+        dpr={[1, 2]}
+        camera={{ position: initialCameraPosition.toArray(), fov: 7 }}
+        gl={{ preserveDrawingBuffer: true }}
+      >
+        <Suspense fallback={<CanvasLoader />}>
+          <OrbitControls
+            ref={(node) => {
+              controlsRef.current = node;
+              if (ref) ref.current = node;
+            }}
+            enableZoom={true}
+            enableRotate={true}
+            enablePan={true}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={0}
+          />
+          <Computers isMobile={isMobile} />
+        </Suspense>
+        <Preload all />
+      </Canvas>
+      
+      {/* Fullscreen & Reset Button */}
+      <motion.button
+        className="absolute bottom-5 right-5 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-500 focus:outline-none"
+        onClick={toggleFullScreenAndNavigate}
+        whileTap={{ scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }}
+        exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.5 } }}
+      >
+        ⛶
+      </motion.button>
+    </div>
   );
 });
 
