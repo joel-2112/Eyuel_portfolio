@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState, forwardRef } from "react";
+import React, { Suspense, useEffect, useState, forwardRef, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import CanvasLoader from "../Loader";
@@ -45,8 +45,9 @@ const Computers = ({ isMobile }) => {
   );
 };
 
-export const ComputersCanvas = forwardRef((props, ref) => {
+export const ComputersCanvas = forwardRef(({ zoomed, onCameraReset }, ref) => {
   const [isMobile, setIsMobile] = useState(false);
+  const controlsRef = useRef();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 500px)");
@@ -63,22 +64,40 @@ export const ComputersCanvas = forwardRef((props, ref) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (zoomed && controlsRef.current) {
+      // Reset camera to initial position
+      controlsRef.current.reset();
+      onCameraReset();
+
+      // Zoom in after reset
+      setTimeout(() => {
+        controlsRef.current.target.set(0, 0, 0);
+        controlsRef.current.object.position.set(-10, 5, 2); // Adjust this for zoom effect
+        controlsRef.current.update();
+      }, 1000);
+    }
+  }, [zoomed, onCameraReset]);
+
   return (
     <Canvas
       frameloop="demand"
       shadows
       dpr={[1, 2]}
-      camera={{ position: [-60, 10, 3], fov: 6}} // Adjusted to show the front side
+      camera={{ position: [-40, 5, -1.8], fov: 7 }} // Adjusted to show the front side
       gl={{ preserveDrawingBuffer: true }}
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-          ref={ref} // Forward the ref to OrbitControls
-          enableZoom={true} // Allow zooming
-          enableRotate={true} // Allow rotation
-          enablePan={true} // Allow panning
-          maxPolarAngle={Math.PI / 2} // Limit vertical rotation to 90 degrees
-          minPolarAngle={0} // Allow looking from above
+          ref={(node) => {
+            controlsRef.current = node;
+            if (ref) ref.current = node;
+          }}
+          enableZoom={true}
+          enableRotate={true}
+          enablePan={true}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={0}
         />
         <Computers isMobile={isMobile} />
       </Suspense>

@@ -1,11 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import win from "../assets/win.jpg";
+import Taskbar from "../components/Taskbar"; // Import the Taskbar component
 
 const Home = () => {
   return (
     <div
-    
       className="relative w-full h-screen z-30 flex flex-col"
       style={{ backgroundImage: `url(${win})`, backgroundSize: "cover" }}
     >
@@ -23,15 +23,8 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Windows Taskbar */}
-      <div className="absolute bottom-0 w-full h-14 bg-black flex items-center px-4">
-        <img src="/icons/windows.png" alt="Start" className="w-8 h-8 cursor-pointer" />
-        <div className="flex gap-4 ml-4">
-          <img src="/icons/fileexplorer.png" alt="File Explorer" className="w-8 h-8 cursor-pointer" />
-          <img src="/icons/chrome.png" alt="Chrome" className="w-8 h-8 cursor-pointer" />
-        </div>
-        <div className="ml-auto text-white text-lg">10:45 AM</div>
-      </div>
+      {/* Taskbar */}
+      <Taskbar />
     </div>
   );
 };

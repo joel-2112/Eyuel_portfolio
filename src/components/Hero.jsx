@@ -1,18 +1,23 @@
 import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { ComputersCanvas } from "./canvas/Computers";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const navigate = useNavigate();
   const [zoomed, setZoomed] = useState(false);
+  const controlsRef = useRef();
 
   const handleNavigate = () => {
     setZoomed(true);
     setTimeout(() => {
       navigate("/home");
-    }, 2000);
+    }, 800); // Adjust timing to match the total animation duration
+  };
+
+  const handleCameraReset = () => {
+    console.log("Camera has been reset to initial position");
   };
 
   return (
@@ -33,11 +38,23 @@ const Hero = () => {
             web applications with the latest technologies.
           </p>
         </div>
+        <div className="bg-gray-600  p-2 mt-5 ml-10 text-gray-500 border-blue-100 border rounded-md">
+          <div className=" bg-gray-200 p-2">
+
+            <h1>play with my laptop </h1>
+            <h1>if you want more information about me!!! </h1>
+          </div>
+        </div>
       </div>
 
       {/* 3D Scene */}
-      <motion.div className="absolute inset-0 top-[300px] sm:top-[350px]">
-        <ComputersCanvas zoomed={zoomed} />
+      <motion.div
+        className="absolute  inset-0 top-[300px] sm:top-[350px]"
+        initial={{ opacity: 1 }}
+        animate={zoomed ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ duration: 2, delay: 2 }} // Slow fade-in effect
+      >
+        <ComputersCanvas ref={controlsRef} zoomed={zoomed} onCameraReset={handleCameraReset} />
       </motion.div>
 
       {/* Scroll Indicator */}
@@ -50,8 +67,8 @@ const Hero = () => {
           transition={{ duration: 1 }}
         >
           <motion.div
-            animate={{ y: [0, 0, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 2.0, repeat: Infinity, repeatType: "loop" }}
             className="w-3 h-3 rounded-full bg-blue-500 mb-1"
           />
         </motion.div>
