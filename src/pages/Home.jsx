@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import win from "../assets/win.jpg";
+import win from "../assets/wallpaper.png";
 import Taskbar from "../components/Taskbar"; // Import the Taskbar component
 
 const Home = () => {
