@@ -1,6 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import win from "../assets/wallpaper.png";
+import contacts from "../assets/contact.png";
+import documents from "../assets/doument.svg";
+import pictures from "../assets/pictures.png";
+import projects from "../assets/projects.svg";
 import Taskbar from "../components/Taskbar"; // Import the Taskbar component
 
 const Home = () => {
@@ -13,12 +17,20 @@ const Home = () => {
       <div className="absolute top-10 left-5 text-white text-lg">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col items-center cursor-pointer">
-            <img src="/icons/mycomputer.png" alt="My Computer" className="w-12 h-12" />
-            <p>My Computer</p>
+            <img src={projects} alt="Projects" className="w-12 h-12" />
+            <p>Projects</p>
           </div>
           <div className="flex flex-col items-center cursor-pointer">
-            <img src="/icons/recyclebin.png" alt="Recycle Bin" className="w-12 h-12" />
-            <p>Recycle Bin</p>
+            <img src={documents} alt="Documents" className="w-12 h-12" />
+            <p>Documents</p>
+          </div>
+          <div className="flex flex-col items-center cursor-pointer">
+            <img src={pictures} alt="Pictures" className="w-12 h-12" />
+            <p>Pictures</p>
+          </div>
+          <div className="flex flex-col items-center cursor-pointer">
+            <img src={contacts} alt="Contacts" className="w-12 h-12" />
+            <p>Contacts</p>
           </div>
         </div>
       </div>

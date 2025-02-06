@@ -10,7 +10,7 @@ const StarWrapper = (Component, idName) =>
         initial='hidden'
         whileInView='show'
         viewport={{ once: true, amount: 0.25 }}
-        className={`${styles.padding} max-w-7xl  relative mx-12 z-0 my-12 border-2 border-dotted border-gray-300 rounded-lg`} // Added margin, dotted border, and rounded corners
+        className={`${styles.padding} max-w-7xl  relative  z-0 my-12 `} // Added margin, dotted border, and rounded corners
       >
         <span className='hash-span' id={idName}>
           &nbsp;

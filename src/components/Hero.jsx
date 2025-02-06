@@ -15,7 +15,7 @@ const Hero = () => {
       <div className={`absolute inset-0 top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}>
         <div className="flex flex-col justify-center items-center mt-5">
           <div className="w-5 h-5 rounded-full bg-blue-500" />
-          <div className="w-1 sm:h-80 h-40 bg-gradient-to-b from-blue-500 to-gray-50" />
+          <div className="w-1 sm:h-40 h-40 bg-gradient-to-b from-blue-500 to-gray-50" />
         </div>
 
         <div>
@@ -32,7 +32,7 @@ const Hero = () => {
 
       {/* 3D Scene */}
       <motion.div
-        className="absolute  inset-0 top-[300px] sm:top-[350px]"
+        className="absolute  inset-0 top-[350px]  lg:top-[350px] bg-gray-50 border border-gray-50 lg:mx-24 mx-10  shadow-lg rounded-lg sm:top-[350px]"
         initial={{ opacity: 1 }}
         transition={{ duration: 2, delay: 2 }} // Slow fade-in effect
       >
