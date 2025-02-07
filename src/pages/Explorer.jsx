@@ -2,37 +2,37 @@ import React from "react";
 import { CheckCircle, XCircle, Folder, FileText } from "lucide-react";
 import Taskbar from "../components/Taskbar";
 import Sidebar from "../components/Sidebar";
-
+import TopNav from "../components/TopNav";
 // New TopNav component for folder navigation
-const TopNav = () => {
-    return (
-        <div className="flex items-center justify-between px-4 py-2 bg-gray-300 border-b border-gray-400">
-            <div className="flex items-center space-x-2">
-                <button className="px-2 py-1 bg-white rounded shadow hover:bg-gray-200">
-                    Back
-                </button>
-                <button className="px-2 py-1 bg-white rounded shadow hover:bg-gray-200">
-                    Forward
-                </button>
-                <button className="px-2 py-1 bg-white rounded shadow hover:bg-gray-200">
-                    Up
-                </button>
-            </div>
-            <div className="flex-1 mx-4">
-                <input
-                    type="text"
-                    className="w-full px-4 py-2 bg-white border border-gray-400 rounded shadow"
-                    value="This PC > Desktop > apps"
-                    readOnly
-                />
-            </div>
-        </div>
-    );
-};
+// const TopNav = () => {
+//     return (
+//         <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-400">
+//             <div className="flex items-center space-x-2">
+//                 <button className="px-2 py-1 bg-white rounded shadow hover:bg-gray-200">
+//                     Back
+//                 </button>
+//                 <button className="px-2 py-1 bg-white rounded shadow hover:bg-gray-200">
+//                     Forward
+//                 </button>
+//                 <button className="px-2 py-1 bg-white rounded shadow hover:bg-gray-200">
+//                     Up
+//                 </button>
+//             </div>
+//             <div className="flex-1 mx-4">
+//                 <input
+//                     type="text"
+//                     className="w-full px-4 py-2 bg-white border border-gray-400 rounded shadow"
+//                     value="This PC > Desktop > apps"
+//                     readOnly
+//                 />
+//             </div>
+//         </div>
+//     );
+// };
 
 const FileRow = ({ name, status, type, platform, createdAt, updatedAt }) => {
     return (
-        <div className="grid grid-cols-6 items-center py-2 px-4 border-b border-gray-200 hover:bg-gray-100">
+        <div className="grid grid-cols-6 items-center py-2 px-4  hover:bg-gray-100">
             <div className="flex items-center space-x-2">
                 <Folder className="text-yellow-500" />
                 <span className="font-medium text-gray-700">{name}</span>
@@ -67,7 +67,7 @@ const Explorer = () => {
     ];
 
     return (
-        <div className="flex flex-col h-screen bg-gray-100 text-gray-900">
+        <div className="flex flex-col h-screen bg-white text-gray-900">
             {/* Top Navigation */}
             <TopNav />
 
@@ -77,24 +77,24 @@ const Explorer = () => {
 
                 {/* Main Content */}
                 <div className="flex-1 flex flex-col">
-                    <header className="px-4 py-2 border-b border-gray-300 bg-gray-200">Projects</header>
-                    <div className="grid grid-cols-6 gap-4 p-4 text-sm font-medium text-gray-600 border-b border-gray-300">
-                        <span>Name</span>
-                        <span>Status</span>
-                        <span>Type</span>
-                        <span>Platform</span>
-                        <span>Created At</span>
-                        <span>Updated At</span>
+                    {/* /* <header className="px-4 py-2 border-b border-gray-300 ">Projects</header> */} 
+                    <div className="grid grid-cols-6 gap-4 p-4 text-sm font-medium text-gray-600 border-r border-1 border-gray-300">
+                        <span className="border-r border-gray-300">Name</span>
+                        <span className="border-r border-gray-300">Status</span>
+                        <span className="border-r border-gray-300">Type</span>
+                        <span className="border-r border-gray-300">Platform</span>
+                        <span className="border-r border-gray-300">Created At</span>
+                        <span className="border-r border-gray-300">Updated At</span>
                     </div>
                     <div className="flex-1 overflow-auto">
                         {files.map((file, index) => (
                             <FileRow key={index} {...file} />
                         ))}
                     </div>
-                </div>
-            </div>
+                    </div>
+                    </div>
 
-            {/* Taskbar */}
+                    {/* Taskbar */}
             <Taskbar />
         </div>
     );

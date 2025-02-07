@@ -99,7 +99,7 @@ const Sidebar = () => {
 
     return (
         <div className="w-64 bg-white text-black h-full p-4 border-r border-gray-300">
-            <h2 className="text-xl font-bold mb-4">Sidebar</h2>
+            {/* <h2 className="text-xl font-bold mb-4">Sidebar</h2> */}
             {folderStructure.map((folder, index) =>
                 renderFolder(folder, folder.name)
             )}
