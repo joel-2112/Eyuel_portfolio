@@ -1,44 +1,8 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronRight, Folder, FileText, Music, Image, Video, Download } from 'lucide-react';
+import React, { useState } from "react";
+import { ArrowRightToLineIcon, ChevronDown, ChevronRight } from "lucide-react";
+import FolderIcon from "./FolderIcon";
 
-const folderStructure = [
-    {
-        name: 'Quick access',
-        type: 'folder',
-        children: [],
-    },
-    {
-        name: 'OneDrive',
-        type: 'folder',
-        children: [],
-    },
-    {
-        name: 'This PC',
-        type: 'folder',
-        children: [
-            {
-                name: 'Desktop',
-                type: 'folder',
-                children: [
-                    { name: '3d_portfolio', type: 'folder', children: [] },
-                    { name: 'apps', type: 'folder', children: [] },
-                    { name: 'cloned', type: 'folder', children: [] },
-                    { name: 'portfolio', type: 'folder', children: [] },
-                    { name: 'projects', type: 'folder', children: [] },
-                    { name: 'webapps', type: 'folder', children: [] },
-                ],
-            },
-            { name: 'Documents', type: 'folder', children: [] },
-            { name: 'Downloads', type: 'folder', children: [] },
-            { name: 'Music', type: 'folder', children: [] },
-            { name: 'Pictures', type: 'folder', children: [] },
-            { name: 'Videos', type: 'folder', children: [] },
-        ],
-    },
-    { name: 'Network', type: 'folder', children: [] },
-];
-
-const Sidebar = () => {
+const Sidebar = ({ currentPath, onFolderClick }) => {
     const [expandedFolders, setExpandedFolders] = useState({});
 
     const toggleExpand = (path) => {
@@ -48,31 +12,21 @@ const Sidebar = () => {
         }));
     };
 
-    const getIcon = (name) => {
-        switch (name) {
-            case 'Documents':
-                return <FileText className="w-4 h-4 text-blue-500 mr-2" />;
-            case 'Downloads':
-                return <Download className="w-4 h-4 text-blue-500 mr-2" />;
-            case 'Music':
-                return <Music className="w-4 h-4 text-green-500 mr-2" />;
-            case 'Pictures':
-                return <Image className="w-4 h-4 text-purple-500 mr-2" />;
-            case 'Videos':
-                return <Video className="w-4 h-4 text-red-500 mr-2" />;
-            default:
-                return <Folder className="w-4 h-4 text-yellow-500 mr-2" />;
-        }
-    };
-
     const renderFolder = (folder, path) => {
         const isExpanded = expandedFolders[path];
 
         return (
-            <div className="ml-4">
+            <div key={path} className="ml-2">
                 <div
-                    className="flex items-center cursor-pointer"
-                    onClick={() => toggleExpand(path)}
+                    className={`flex items-center cursor-pointer px-2 py-1 rounded-md ${
+                        currentPath === path ? "bg-gray-300 text-gray-900" : "hover:bg-gray-200 text-gray-700"
+                    }`}
+                    onClick={() => {
+                        onFolderClick(path, folder);
+                        if (folder.children.length > 0) {
+                            toggleExpand(path);
+                        }
+                    }}
                 >
                     {folder.children.length > 0 ? (
                         isExpanded ? (
@@ -83,24 +37,51 @@ const Sidebar = () => {
                     ) : (
                         <span className="w-4 h-4 mr-2" />
                     )}
-                    {getIcon(folder.name)}
+                    <FolderIcon name={folder.name} />
                     <span>{folder.name}</span>
                 </div>
-                {isExpanded && folder.children.length > 0 && (
-                    <div className="ml-4">
-                        {folder.children.map((child, index) =>
-                            renderFolder(child, `${path}/${child.name}`)
-                        )}
-                    </div>
-                )}
+                {isExpanded &&
+                    folder.children.length > 0 &&
+                    folder.children.map((child) =>
+                        renderFolder(child, `${path} > ${child.name}`)
+                    )}
             </div>
         );
     };
 
+    const folderStructure = [
+        { name: "Quick access", type: "folder", children: [] },
+        { name: "OneDrive", type: "folder", children: [] },
+        {
+            name: "This PC",
+            type: "folder",
+            children: [
+                {
+                    name: "Desktop",
+                    type: "folder",
+                    children: [
+                        { name: "3d_portfolio", type: "folder", children: [] },
+                        { name: "apps", type: "folder", children: [] },
+                        { name: "cloned", type: "folder", children: [] },
+                        { name: "portfolio", type: "folder", children: [] },
+                        { name: "projects", type: "folder", children: [] },
+                        { name: "webapps", type: "folder", children: [] },
+                    ],
+                },
+                { name: "Documents", type: "folder", children: [] },
+                { name: "Downloads", type: "folder", children: [] },
+                { name: "Music", type: "folder", children: [] },
+                { name: "Pictures", type: "folder", children: [] },
+                { name: "Videos", type: "folder", children: [] },
+            ],
+        },
+        { name: "Network", type: "folder", children: [] },
+    ];
+
     return (
-        <div className="w-64 bg-white text-black h-full p-4 border-r border-gray-300">
-            {/* <h2 className="text-xl font-bold mb-4">Sidebar</h2> */}
-            {folderStructure.map((folder, index) =>
+        <div className="w-64 bg-white h-full p-4 border-r shadow-lg overflow-y-auto">
+            <h2 className="text-lg font-semibold mb-3 text-gray-800">File Explorer</h2>
+            {folderStructure.map((folder) =>
                 renderFolder(folder, folder.name)
             )}
         </div>
