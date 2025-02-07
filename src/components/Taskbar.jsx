@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Volume2, Wifi, BatteryCharging, Search } from "lucide-react";
 import start from "../assets/start.svg";
 import folderIcon from "../assets/explorer.png";
-import terminalIcon from "../assets/terminal.png";
+import terminalIcon from "../assets/cmd.png";
 import edgeIcon from "../assets/edge.svg";
 import chromeIcon from "../assets/chrome.svg";
 import { FaBatteryHalf } from "react-icons/fa6";
@@ -69,7 +69,7 @@ const Taskbar = () => {
             location.pathname === "/terminal" ? "border-b-2 border-blue-500" : ""
           }`}
         >
-          <img src={terminalIcon} alt="Terminal" className="w-8 h-8" />
+          <img src={terminalIcon} alt="Terminal" className="w-9 h-8" />
         </Link>
 
         {/* External Links (Edge & Chrome) */}
