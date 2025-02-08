@@ -1,9 +1,20 @@
 import { motion } from "framer-motion";
 import { styles } from "../styles";
-import { staggerContainer } from "../utils/motion";
+// import { staggerContainer } from "../utils/motion";
 
 const StarWrapper = (Component, idName) =>
   function HOC() {
+    const staggerContainer = (staggerChildren, delayChildren) => {
+      return {
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: staggerChildren,
+            delayChildren: delayChildren || 0,
+          },
+        },
+      };
+    };
     return (
       <motion.section
         variants={staggerContainer()}
