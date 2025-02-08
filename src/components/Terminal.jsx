@@ -1,4 +1,7 @@
+import {  MinusIcon, Square } from "lucide-react";
 import React, { useState } from "react";
+import { CgClose } from "react-icons/cg";
+import { Rnd } from "react-rnd";
 
 const Terminal = ({ onClose }) => {
   const [isMinimized, setIsMinimized] = useState(false);
@@ -37,39 +40,49 @@ const Terminal = ({ onClose }) => {
       setOutput((prev) => [
         ...prev,
         "Available commands:",
-        "  about       - Display information about me",
-        "  projects    - List my projects",
-        "  education   - Display my education background",
-        "  experience  - Display my work experience",
-        "  clear       - Clear the terminal",
-        "  ls          - List files and folders in the current directory",
-        "  cd <path>   - Change directory",
+        '___________________',
+        "  about       -- Display information about me",
+        "  projects    -- List my projects",
+        "  education   -- Display my education background",
+        "  experience  -- Display my work experience",
+        "  clear       -- Clear the terminal",
+        "  ls          -- List files and folders in the current directory",
+        "  cd <path>   -- Change directory",
       ]);
     } else if (command === "about") {
       setOutput((prev) => [
         ...prev,
-        "I am a software developer with expertise in web and mobile app development.",
+        "My Name is Eyuel Kassahun \n " +  "I am a software engineer and full stack developer \n" +
+         "with expertise in web and mobile app development \n" + 
+         "using technologies MERN stack ,Python Django, DRF and Flutter for mobile app development.",
+         
+        
       ]);
     } else if (command === "projects") {
       setOutput((prev) => [
         ...prev,
         "My projects:",
-        "  - Web App: EthioExplore",
-        "  - Mobile App: Task Manager",
+        "___________________",
+        "  - Web App: EthioExplore , Athlix, TechTalk, InternHub",
+        "  - Mobile App: DoMore, GebiGubae, JoelGPT, EthioExplore, GESH-Delivery ",
       ]);
     } else if (command === "education") {
       setOutput((prev) => [
         ...prev,
         "Education:",
-        "  - Bachelor of Science in Computer Science",
-        "  - Certifications in React, Node.js, and Python",
+        "_________________",
+        "  - Bachelor of Science in Software Engineering",
+        "  - Experienced Software Developer",
       ]);
     } else if (command === "experience") {
       setOutput((prev) => [
         ...prev,
         "Work Experience:",
-        "  - Software Engineer at XYZ Corp (2020-2022)",
-        "  - Freelance Developer (2018-2020)",
+        "_________________",
+        "  - MERN stack developer at STC (4 month)",
+        "  - Flutter Developer at BIT  (2022-2024)",
+        "  - Backend Instructor & TM at Training Team  (2016-2 month)", 
+        "  - Django Developer - Self experienced (2024 - present)", 
       ]);
     } else if (command === "ls") {
       const pathParts = currentPath.split("/").filter((part) => part !== "");
@@ -77,17 +90,22 @@ const Terminal = ({ onClose }) => {
       for (const part of pathParts) {
         currentDir = currentDir[part];
       }
-      const filesAndFolders = Object.keys(currentDir).join("  ");
+      const filesAndFolders =
+        typeof currentDir === "object"
+          ? Object.keys(currentDir).join("  ")
+          : currentDir.join("  ");
       setOutput((prev) => [...prev, filesAndFolders]);
     } else if (command.startsWith("cd")) {
       const path = command.split(" ")[1];
       if (path === "..") {
         // Navigate back
-        const newPath = currentPath.split("/").slice(0, -1).join("/") || "/";
+        const newPath = currentPath.split("/").slice(0, -1).join("/") || "/home";
         setCurrentPath(newPath);
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
-      } else if (path && directoryStructure[path]) {
-        // Navigate forward
+      } else if (
+        directoryStructure[path] &&
+        currentPath === "/home" 
+      ) {
         const newPath = `${currentPath}/${path}`;
         setCurrentPath(newPath);
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
@@ -109,54 +127,90 @@ const Terminal = ({ onClose }) => {
   };
 
   return (
-    <div
-      className={`${
-        isMinimized ? "hidden" : ""
-      } ${
-        isMaximized ? "w-screen h-screen" : "w-[600px] h-[400px]"
-      } fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-white font-mono border border-gray-700 rounded-lg flex flex-col z-50`}
+    <Rnd
+      default={{
+        x: window.innerWidth / 2 - 300,
+        y: window.innerHeight / 2 - 200,
+        width: 600,
+        height: 400,
+      }}
+      minWidth={400}
+      minHeight={300}
+      bounds="window"
+      enableResizing={{
+        bottom: true,
+        bottomLeft: true,
+        bottomRight: true,
+        left: true,
+        right: true,
+        top: true,
+        topLeft: true,
+        topRight: true,
+      }}
+      dragHandleClassName="terminal-header"
     >
-      {/* Terminal Header */}
-      <div className="flex items-center justify-between bg-gray-800 p-2">
-        <div className="text-gray-400">C:\\Users\\pato</div>
-        <div className="flex space-x-2">
-          <button
-            onClick={handleMinimize}
-            className="w-4 h-4 bg-yellow-400 rounded-full"
-            title="Minimize"
-          />
-          <button
-            onClick={handleMaximize}
-            className="w-4 h-4 bg-green-500 rounded-full"
-            title="Maximize"
-          />
-          <button
-            onClick={handleClose}
-            className="w-4 h-4 bg-red-500 rounded-full"
-            title="Close"
-          />
+      <div
+        className={`${
+          isMinimized ? "hidden" : ""
+        } w-full h-full bg-gray-700 text-white font-mono border border-gray-800 rounded-lg flex flex-col`}
+      >
+        {/* Terminal Header */}
+        <div className="terminal-header flex items-center justify-between bg-white  text-gray-500 px-3 py-1">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-gray-700 rounded-full"></div>
+            <span className="text-sm text-gray-700">Command Prompt</span>
+          </div>
+          <div className="flex space-x-2 gap-2 ">
+            <button
+              onClick={handleMinimize}
+              className="w-6 h-6   text-sm flex items-center justify-center rounded"
+              title="Minimize"
+            > 
+            <MinusIcon size={25}/>
+
+            </button>
+            <button
+              onClick={handleMaximize}
+              className="w-6 h-6   text-sm flex items-center justify-center rounded"
+              title="Maximize"
+            >
+             <Square />
+            </button>
+            <button
+              onClick={handleClose}
+              className="w-6 h-6  text-sm flex items-center justify-center rounded"
+              title="Close"
+            >
+              <CgClose size={25}/>
+            </button>
+          </div>
+        </div>
+
+        {/* Terminal Body */}
+        <div className="flex-1 overflow-y-auto p-4">
+          {output.map((line, index) => (
+            <div className="text-gray-100" key={index}>{line}</div>
+          ))}
+
+          {/* Current Input Line */}
+          <div className="flex items-center">
+            {currentPath}&gt;{" "}
+            <input
+              type="text"
+              value={command}
+              onChange={(e) => setCommand(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleCommand(e);
+                }
+              }}
+              className="bg-transparent text-white outline-none w-full inline"
+              autoFocus
+            />
+          </div>
         </div>
       </div>
-
-      {/* Terminal Body */}
-      <div className="flex-1 overflow-y-auto p-2">
-        {output.map((line, index) => (
-          <div key={index}>{line}</div>
-        ))}
-      </div>
-
-      {/* Terminal Input */}
-      <form onSubmit={handleCommand} className="flex items-center bg-gray-900 p-2">
-        <span>{currentPath}&gt; </span>
-        <input
-          type="text"
-          value={command}
-          onChange={(e) => setCommand(e.target.value)}
-          className="flex-1 bg-transparent text-white outline-none ml-2"
-          autoFocus
-        />
-      </form>
-    </div>
+    </Rnd>
   );
 };
 
