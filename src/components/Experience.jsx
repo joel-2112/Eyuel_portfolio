@@ -10,7 +10,7 @@ import "react-vertical-timeline-component/style.min.css";
 import { styles } from "../styles";
 import { experiences } from "../constants";
 import SectionWrapper from "../hoc/SectionWrapper";
-import  textVariant  from "../utils/motion";
+// import  textVariant  from "../utils/motion";
 
 const ExperienceCard = ({ experience }) => {
   return (
@@ -63,6 +63,23 @@ const ExperienceCard = ({ experience }) => {
 };
 
 const Experience = () => {
+  const textVariant = (delay) => {
+    return {
+      hidden: {
+        y: -50,
+        opacity: 0,
+      },
+      show: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          type: "spring",
+          duration: 1.5,
+          delay: delay,
+        },
+      },
+    };
+  };
   return (
     <>
       <motion.div variants={textVariant()}>
