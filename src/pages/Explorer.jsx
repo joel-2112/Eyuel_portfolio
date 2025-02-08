@@ -22,7 +22,47 @@ const Explorer = () => {
                     name: "Desktop",
                     type: "folder",
                     children: [
-                        { name: "Projects", type: "folder", children: [] },
+                        {
+                             name: "Projects",
+                              type: "folder", 
+                              children: [
+                                {
+                                    name: "Web Apps",
+                                     type: "folder", 
+                                     children: [
+                                        {
+                                            name: "EthioExplore",
+                                             type: "folder", 
+                                             children: [
+                                                
+                                                {
+                                                    name: "Doc",
+                                                     type: "file", 
+                                                   
+                                                },
+                                                {
+                                                    name: "Live View",
+                                                     type: "file", 
+                                                    
+                                                },
+                                                {
+                                                    name: "Github",
+                                                     type: "file", 
+                                                    
+                                                },
+                                             ]
+                                        },
+                                     ]
+                                },
+                                {
+                                    name: "Mobile Apps",
+                                     type: "folder", 
+                                     children: [
+                                       
+                                     ]
+                                },
+                              ]
+                         },
                         { name: "Contacts", type: "folder", children: [] },
                         { name: "hobbies.txt", type: "file" },
                     ],
