@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Explorer from './pages/Explorer'
 import FirstScreen from './components/FirstScreen';
+import Terminal from './components/Terminal'
 const App = () => {
   return (
     
@@ -11,6 +12,7 @@ const App = () => {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/explorer" element={<Explorer />} />
+        {/* <Route path="/terminal" element={<Terminal />} /> */}
         <Route path="" element={<FirstScreen />} />
       </Routes>
     </BrowserRouter>

@@ -1,11 +1,14 @@
 import React from "react";
-import { Folder, FileText } from "lucide-react";
+import FullFolder from "../assets/FullFolder.png";
+import Folder from "../assets/Folder.png";
+import { FileText } from "lucide-react";
+
 const Content = ({ currentPath, onFolderClick, folderStructure }) => {
     const getIcon = (type) => {
         return type === "folder" ? (
-            <Folder className="w-6 h-6 text-yellow-500" />
+            <img src={FullFolder} alt="Folder" className="w-16 h-20" />
         ) : (
-            <FileText className="w-6 h-6 text-blue-500" />
+            <FileText className="w-16 h-16 text-blue-500" />
         );
     };
 
@@ -34,17 +37,15 @@ const Content = ({ currentPath, onFolderClick, folderStructure }) => {
 
     return (
         <div className="flex-1 bg-white p-4 overflow-y-auto">
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-6 gap-0 flex-wrap">
                 {currentFolderContents.map((item) => (
                     <div
                         key={item.name}
-                        className={`flex flex-col items-center p-4 bg-gray-100 rounded-md hover:shadow-lg ${
-                            item.type === "folder" ? "cursor-pointer" : ""
-                        }`}
+                        className="flex w-[120px] h-[120px] flex-col items-center justify-center hover:bg-blue-100 cursor-pointer"
                         onClick={() => handleItemClick(item)}
                     >
                         {getIcon(item.type)}
-                        <span className="mt-2 text-sm text-gray-700 truncate">
+                        <span className="text-xs text-gray-700 truncate mt-2 text-center w-full">
                             {item.name}
                         </span>
                     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import win from "../assets/wallpaper.png";
 import contacts from "../assets/contact.png";
@@ -6,8 +6,14 @@ import documents from "../assets/doument.svg";
 import pictures from "../assets/pictures.png";
 import projects from "../assets/projects.svg";
 import Taskbar from "../components/Taskbar"; // Import the Taskbar component
-
+import Terminal from "../components/Terminal";
+useState
 const Home = () => {
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+
+  const handleTerminalToggle = () => {
+    setIsTerminalOpen((prev) => !prev); // Toggle terminal visibility
+  };
   return (
     <div
       className="relative w-full h-screen z-30 flex flex-col"
@@ -34,9 +40,10 @@ const Home = () => {
           </div>
         </div>
       </div>
-
+      
       {/* Taskbar */}
-      <Taskbar />
+      <Taskbar onTerminalToggle={handleTerminalToggle} />
+      {isTerminalOpen && <Terminal onClose={() => setIsTerminalOpen(false)} />}
     </div>
   );
 };
