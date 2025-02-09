@@ -1,90 +1,148 @@
 import React, { useState } from "react";
-import Taskbar from "../components/Taskbar";
+import { Rnd } from "react-rnd";
 import Sidebar from "../components/Sidebar";
 import TopNav from "../components/TopNav";
-import Content from "../components/content"; // Ensure this import is correct
+import Content from "../components/content";
 import { folderStructure } from "../data/FolderStructure";
-const Explorer = () => {
-    const [currentPath, setCurrentPath] = useState("This PC"); // Initial path
-    const [history, setHistory] = useState(["This PC"]); // Navigation history
-    const [historyIndex, setHistoryIndex] = useState(0); // Current position in history
 
+const Explorer = ({ onClose }) => {
+  const [currentPath, setCurrentPath] = useState("This PC");
+  const [history, setHistory] = useState(["This PC"]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [windowSize, setWindowSize] = useState({ width: 800, height: 600 });
+  const [windowPosition, setWindowPosition] = useState({ x: 100, y: 100 });
 
-    // Handle folder click in the sidebar
-    const handleFolderClick = (path) => {
-        const newHistory = history.slice(0, historyIndex + 1); // Discard future history
-        newHistory.push(path); // Add new path to history
-        setHistory(newHistory);
-        setHistoryIndex(newHistory.length - 1);
-        setCurrentPath(path);
-    };
+  const taskbarHeight = 48; // Height of the Taskbar
 
-    // Handle back navigation
-    const handleNavigateBack = () => {
-        if (historyIndex > 0) {
-            const newIndex = historyIndex - 1;
-            setHistoryIndex(newIndex);
-            setCurrentPath(history[newIndex]);
-        }
-    };
+  // Handle folder click in the sidebar
+  const handleFolderClick = (path) => {
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push(path);
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+    setCurrentPath(path);
+  };
 
-    // Handle forward navigation
-    const handleNavigateForward = () => {
-        if (historyIndex < history.length - 1) {
-            const newIndex = historyIndex + 1;
-            setHistoryIndex(newIndex);
-            setCurrentPath(history[newIndex]);
-        }
-    };
+  // Handle back navigation
+  const handleNavigateBack = () => {
+    if (historyIndex > 0) {
+      const newIndex = historyIndex - 1;
+      setHistoryIndex(newIndex);
+      setCurrentPath(history[newIndex]);
+    }
+  };
 
-    // Handle refresh
-    const handleRefresh = () => {
-        // Reload the current path (you can add logic to refetch data if needed)
-        console.log("Refreshing:", currentPath);
-    };
+  // Handle forward navigation
+  const handleNavigateForward = () => {
+    if (historyIndex < history.length - 1) {
+      const newIndex = historyIndex + 1;
+      setHistoryIndex(newIndex);
+      setCurrentPath(history[newIndex]);
+    }
+  };
 
-    // Handle breadcrumb path click
-    const handlePathClick = (path) => {
-        const newIndex = history.indexOf(path);
-        if (newIndex !== -1) {
-            setHistoryIndex(newIndex);
-            setCurrentPath(path);
-        }
-    };
+  // Handle refresh
+  const handleRefresh = () => {
+    console.log("Refreshing:", currentPath);
+  };
 
-    return (
-        <div className="flex flex-col h-screen bg-white text-gray-900">
-            {/* Top Navigation */}
-            <TopNav
-                currentPath={currentPath}
-                onNavigateBack={handleNavigateBack}
-                onNavigateForward={handleNavigateForward}
-                onRefresh={handleRefresh}
-                onPathClick={handlePathClick}
+  // Handle breadcrumb path click
+  const handlePathClick = (path) => {
+    const newIndex = history.indexOf(path);
+    if (newIndex !== -1) {
+      setHistoryIndex(newIndex);
+      setCurrentPath(path);
+    }
+  };
+
+  // Handle minimize
+  const handleMinimize = () => {
+    setIsMinimized(true);
+    console.log("Minimized");
+  };
+
+  // Handle maximize
+  const handleMaximize = () => {
+    if (isMaximized) {
+      // Restore to default size and position
+      setWindowSize({ width: 800, height: 600 });
+      setWindowPosition({ x: 100, y: 100 });
+    } else {
+      // Maximize to full screen, accounting for the Taskbar height
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight - taskbarHeight,
+      });
+      setWindowPosition({ x: 0, y: 0 });
+    }
+    setIsMaximized((prev) => !prev);
+    console.log("Maximized:", !isMaximized);
+  };
+
+  // Handle close
+  const handleClose = () => {
+    onClose();
+  };
+
+  // If minimized, don't render the window
+  if (isMinimized) {
+    return null;
+  }
+
+  return (
+    <Rnd
+      size={{ width: windowSize.width, height: windowSize.height }}
+      position={{ x: windowPosition.x, y: windowPosition.y }}
+      onDragStop={(e, d) => setWindowPosition({ x: d.x, y: d.y })}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        setWindowSize({
+          width: ref.style.width,
+          height: ref.style.height,
+        });
+        setWindowPosition(position);
+      }}
+      minWidth={400}
+      minHeight={300}
+      bounds="parent" // Restrict dragging within the parent container
+      disableDragging={isMaximized} // Disable dragging when maximized
+      enableResizing={!isMaximized} // Disable resizing when maximized
+      className="z-50" // Ensure the window is above other elements
+    >
+      <div className="flex flex-col h-full bg-white text-gray-900  overflow-hidden">
+        {/* Top Navigation */}
+        <TopNav
+          currentPath={currentPath}
+          onNavigateBack={handleNavigateBack}
+          onNavigateForward={handleNavigateForward}
+          onRefresh={handleRefresh}
+          onPathClick={handlePathClick}
+          onMinimize={handleMinimize}
+          onMaximize={handleMaximize}
+          onClose={handleClose}
+        />
+
+        <div className="flex flex-1">
+          {/* Sidebar */}
+          <Sidebar
+            currentPath={currentPath}
+            onFolderClick={handleFolderClick}
+            folderStructure={folderStructure}
+          />
+
+          {/* Main Content */}
+          <div className="flex-1">
+            <Content
+              currentPath={currentPath}
+              onFolderClick={handleFolderClick}
+              folderStructure={folderStructure}
             />
-
-            <div className="flex flex-1">
-                {/* Sidebar */}
-                <Sidebar
-                    currentPath={currentPath}
-                    onFolderClick={handleFolderClick}
-                    folderStructure={folderStructure}
-                />
-
-                {/* Main Content */}
-                <div >
-                    <Content
-                        currentPath={currentPath}
-                        onFolderClick={handleFolderClick}
-                        folderStructure={folderStructure}
-                    />
-                </div>
-            </div>
-
-            {/* Taskbar */}
-            <Taskbar />
+          </div>
         </div>
-    );
+      </div>
+    </Rnd>
+  );
 };
 
 export default Explorer;

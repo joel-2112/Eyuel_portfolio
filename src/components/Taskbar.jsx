@@ -8,7 +8,7 @@ import terminalIcon from "../assets/cmd.png";
 import edgeIcon from "../assets/edge.svg";
 import chromeIcon from "../assets/chrome.svg";
 
-const Taskbar = ({ onTerminalToggle }) => {
+const Taskbar = ({ onTerminalToggle,onExplorerToggle }) => {
   const [currentTime, setCurrentTime] = React.useState(new Date());
   const [showSuggestions, setShowSuggestions] = React.useState(false);
   const location = useLocation();
@@ -59,14 +59,14 @@ const Taskbar = ({ onTerminalToggle }) => {
 
       {/* App Icons */}
       <div className="flex gap-3 ml-4 py-1">
-        <Link
-          to="/explorer"
+        <button
+        onClick={onExplorerToggle}
           className={`p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 cursor-pointer ${
             location.pathname === "/explorer" ? "border-b-2 border-blue-500" : ""
           }`}
         >
           <img src={folderIcon} alt="Explorer" className="w-8 h-8" />
-        </Link>
+        </button>
 
         {/* Terminal Button */}
         <button

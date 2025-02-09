@@ -5,15 +5,22 @@ import contacts from "../assets/contact.png";
 import documents from "../assets/doument.svg";
 import pictures from "../assets/pictures.png";
 import projects from "../assets/projects.svg";
-import Taskbar from "../components/Taskbar"; // Import the Taskbar component
+import Taskbar from "../components/Taskbar";
 import Terminal from "../components/Terminal";
-useState
+import Explorer from "./Explorer";
+
 const Home = () => {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [isExplorerOpen, setIsExplorerOpen] = useState(false);
 
   const handleTerminalToggle = () => {
-    setIsTerminalOpen((prev) => !prev); // Toggle terminal visibility
+    setIsTerminalOpen((prev) => !prev);
   };
+
+  const handleExplorerToggle = () => {
+    setIsExplorerOpen((prev) => !prev);
+  };
+
   return (
     <div
       className="relative w-full h-screen z-30 flex flex-col"
@@ -40,10 +47,11 @@ const Home = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Taskbar */}
-      <Taskbar onTerminalToggle={handleTerminalToggle} />
+      <Taskbar onTerminalToggle={handleTerminalToggle} onExplorerToggle={handleExplorerToggle} />
       {isTerminalOpen && <Terminal onClose={() => setIsTerminalOpen(false)} />}
+      {isExplorerOpen && <Explorer onClose={() => setIsExplorerOpen(false)} />}
     </div>
   );
 };
