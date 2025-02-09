@@ -1,4 +1,4 @@
-import {  MinusIcon, Square } from "lucide-react";
+import { MinusIcon, Square } from "lucide-react";
 import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { Rnd } from "react-rnd";
@@ -6,9 +6,16 @@ import { Rnd } from "react-rnd";
 const Terminal = ({ onClose }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [windowSize, setWindowSize] = useState({ width: 600, height: 400 });
+  const [windowPosition, setWindowPosition] = useState({
+    x: window.innerWidth / 2 - 300,
+    y: window.innerHeight / 2 - 200,
+  });
   const [command, setCommand] = useState("");
   const [output, setOutput] = useState([]);
   const [currentPath, setCurrentPath] = useState("/home");
+
+  const taskbarHeight = 48; // Height of the Taskbar
 
   // Mock directory structure
   const directoryStructure = {
@@ -19,12 +26,20 @@ const Terminal = ({ onClose }) => {
     },
   };
 
-  const handleMinimize = () => setIsMinimized(true);
-const handleMaximize = () => {
+  // Handle minimize
+  const handleMinimize = () => {
+    setIsMinimized(true);
+  };
+
+  // Handle maximize
+  const handleMaximize = () => {
     if (isMaximized) {
       // Restore to default size and position
-      setWindowSize({ width: 800, height: 600 });
-      setWindowPosition({ x: 100, y: 100 });
+      setWindowSize({ width: 600, height: 400 });
+      setWindowPosition({
+        x: window.innerWidth / 2 - 300,
+        y: window.innerHeight / 2 - 200,
+      });
     } else {
       // Maximize to full screen, accounting for the Taskbar height
       setWindowSize({
@@ -35,10 +50,13 @@ const handleMaximize = () => {
     }
     setIsMaximized((prev) => !prev);
   };
+
+  // Handle close
   const handleClose = () => {
     onClose(); // Notify the parent component to close the terminal
   };
 
+  // Handle command input
   const handleCommand = (e) => {
     e.preventDefault();
 
@@ -54,7 +72,7 @@ const handleMaximize = () => {
       setOutput((prev) => [
         ...prev,
         "Available commands:",
-        '___________________',
+        "___________________",
         "  about       -- Display information about me",
         "  projects    -- List my projects",
         "  education   -- Display my education background",
@@ -66,19 +84,18 @@ const handleMaximize = () => {
     } else if (command === "about") {
       setOutput((prev) => [
         ...prev,
-        "My Name is Eyuel Kassahun \n " +  "I am a software engineer and full stack developer \n" +
-         "with expertise in web and mobile app development \n" + 
-         "using technologies MERN stack ,Python Django, DRF and Flutter for mobile app development.",
-         
-        
+        "My Name is Eyuel Kassahun \n " +
+          "I am a software engineer and full stack developer \n" +
+          "with expertise in web and mobile app development \n" +
+          "using technologies MERN stack, Python Django, DRF, and Flutter for mobile app development.",
       ]);
     } else if (command === "projects") {
       setOutput((prev) => [
         ...prev,
         "My projects:",
         "___________________",
-        "  - Web App: EthioExplore , Athlix, TechTalk, InternHub",
-        "  - Mobile App: DoMore, GebiGubae, JoelGPT, EthioExplore, GESH-Delivery ",
+        "  - Web App: EthioExplore, Athlix, TechTalk, InternHub",
+        "  - Mobile App: DoMore, GebiGubae, JoelGPT, EthioExplore, GESH-Delivery",
       ]);
     } else if (command === "education") {
       setOutput((prev) => [
@@ -93,10 +110,10 @@ const handleMaximize = () => {
         ...prev,
         "Work Experience:",
         "_________________",
-        "  - MERN stack developer at STC (4 month)",
-        "  - Flutter Developer at BIT  (2022-2024)",
-        "  - Backend Instructor & TM at Training Team  (2016-2 month)", 
-        "  - Django Developer - Self experienced (2024 - present)", 
+        "  - MERN stack developer at STC (4 months)",
+        "  - Flutter Developer at BIT (2022-2024)",
+        "  - Backend Instructor & TM at Training Team (2016 - 2 months)",
+        "  - Django Developer - Self-experienced (2024 - present)",
       ]);
     } else if (command === "ls") {
       const pathParts = currentPath.split("/").filter((part) => part !== "");
@@ -118,7 +135,7 @@ const handleMaximize = () => {
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
       } else if (
         directoryStructure[path] &&
-        currentPath === "/home" 
+        currentPath === "/home"
       ) {
         const newPath = `${currentPath}/${path}`;
         setCurrentPath(newPath);
@@ -142,60 +159,53 @@ const handleMaximize = () => {
 
   return (
     <Rnd
-      default={{
-        x: window.innerWidth / 2 - 300,
-        y: window.innerHeight / 2 - 200,
-        width: 600,
-        height: 400,
+      size={{ width: windowSize.width, height: windowSize.height }}
+      position={{ x: windowPosition.x, y: windowPosition.y }}
+      onDragStop={(e, d) => setWindowPosition({ x: d.x, y: d.y })}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        setWindowSize({
+          width: ref.style.width,
+          height: ref.style.height,
+        });
+        setWindowPosition(position);
       }}
       minWidth={400}
       minHeight={300}
       bounds="window"
-      enableResizing={{
-        bottom: true,
-        bottomLeft: true,
-        bottomRight: true,
-        left: true,
-        right: true,
-        top: true,
-        topLeft: true,
-        topRight: true,
-      }}
-      dragHandleClassName="terminal-header"
+      disableDragging={isMaximized} // Disable dragging when maximized
+      enableResizing={!isMaximized} // Disable resizing when maximized
+      className={`${isMinimized ? "hidden" : ""}`}
     >
       <div
-        className={`${
-          isMinimized ? "hidden" : ""
-        } w-full h-full bg-gray-700 text-white font-mono border border-gray-800 rounded-lg flex flex-col`}
+        className="w-full h-full bg-gray-700 text-white font-mono border border-gray-800 rounded-lg flex flex-col"
       >
         {/* Terminal Header */}
-        <div className="terminal-header flex items-center justify-between bg-white  text-gray-500 px-3 py-1">
+        <div className="terminal-header flex items-center justify-between bg-white text-gray-500 px-3 py-1">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-gray-700 rounded-full"></div>
             <span className="text-sm text-gray-700">Command Prompt</span>
           </div>
-          <div className="flex space-x-2 gap-2 ">
+          <div className="flex space-x-2 gap-2">
             <button
               onClick={handleMinimize}
-              className="w-6 h-6   text-sm flex items-center justify-center rounded"
+              className="w-6 h-6 text-sm flex items-center justify-center rounded"
               title="Minimize"
-            > 
-            <MinusIcon size={25}/>
-
+            >
+              <MinusIcon size={25} />
             </button>
             <button
               onClick={handleMaximize}
-              className="w-6 h-6   text-sm flex items-center justify-center rounded"
+              className="w-6 h-6 text-sm flex items-center justify-center rounded"
               title="Maximize"
             >
-             <Square />
+              <Square />
             </button>
             <button
               onClick={handleClose}
-              className="w-6 h-6  text-sm flex items-center justify-center rounded"
+              className="w-6 h-6 text-sm flex items-center justify-center rounded"
               title="Close"
             >
-              <CgClose size={25}/>
+              <CgClose size={25} />
             </button>
           </div>
         </div>
@@ -203,7 +213,9 @@ const handleMaximize = () => {
         {/* Terminal Body */}
         <div className="flex-1 overflow-y-auto p-4">
           {output.map((line, index) => (
-            <div className="text-gray-100" key={index}>{line}</div>
+            <div className="text-gray-100" key={index}>
+              {line}
+            </div>
           ))}
 
           {/* Current Input Line */}

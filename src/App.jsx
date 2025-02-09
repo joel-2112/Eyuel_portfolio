@@ -11,8 +11,6 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/home" element={<Home />} />
-        {/* <Route path="/explorer" element={<Explorer />} /> */}
-        {/* <Route path="/terminal" element={<Terminal />} /> */}
         <Route path="" element={<FirstScreen />} />
       </Routes>
     </BrowserRouter>
