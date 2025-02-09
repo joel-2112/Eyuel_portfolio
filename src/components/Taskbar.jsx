@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Volume2, Wifi, Search } from "lucide-react";
 import { FaBatteryHalf } from "react-icons/fa6";
-import start from "../assets/start.svg";
+import start from "../assets/Windows.svg";
 import folderIcon from "../assets/explorer.png";
 import terminalIcon from "../assets/cmd.png";
 import edgeIcon from "../assets/edge.svg";
@@ -29,10 +29,7 @@ const Taskbar = ({ onTerminalToggle,onExplorerToggle }) => {
           src={start}
           alt="Start"
           className="w-5 h-5"
-          style={{
-            filter:
-              "brightness(0) saturate(100%) invert(44%) sepia(99%) saturate(1518%) hue-rotate(187deg) brightness(98%) contrast(91%)",
-          }} // Blue filter
+         // Blue filter
         />
       </div>
 
