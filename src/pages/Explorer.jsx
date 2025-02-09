@@ -60,7 +60,7 @@ const Explorer = ({ onClose }) => {
   // Handle minimize
   const handleMinimize = () => {
     setIsMinimized(true);
-    console.log("Minimized");
+    // console.log("Minimized");
   };
 
   // Handle maximize
@@ -68,7 +68,10 @@ const Explorer = ({ onClose }) => {
     if (isMaximized) {
       // Restore to default size and position
       setWindowSize({ width: 800, height: 600 });
-      setWindowPosition({ x: 100, y: 100 });
+      setWindowPosition({
+        x: window.innerWidth / 2 - 300,
+        y: window.innerHeight / 2 - 200,
+      });
     } else {
       // Maximize to full screen, accounting for the Taskbar height
       setWindowSize({
