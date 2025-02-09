@@ -52,7 +52,7 @@ const Sidebar = ({ currentPath, onFolderClick, folderStructure }) => {
     };
 
     return (
-        <div className="w-64 bg-white h-full p-4 border-r shadow-lg overflow-y-auto">
+        <div className="w-64 bg-white h-full p-4 border-r  overflow-y-auto">
             {folderStructure.map((folder) =>
                 renderFolder(folder, folder.name)
             )}

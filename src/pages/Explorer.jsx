@@ -78,7 +78,6 @@ const Explorer = ({ onClose }) => {
       setWindowPosition({ x: 0, y: 0 });
     }
     setIsMaximized((prev) => !prev);
-    console.log("Maximized:", !isMaximized);
   };
 
   // Handle close
