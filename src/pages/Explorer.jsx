@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import Sidebar from "../components/Sidebar";
 import TopNav from "../components/TopNav";
@@ -15,6 +15,12 @@ const Explorer = ({ onClose }) => {
   const [windowPosition, setWindowPosition] = useState({ x: 100, y: 100 });
 
   const taskbarHeight = 48; // Height of the Taskbar
+
+  // Set initial position to avoid overlapping with the Taskbar
+  useEffect(() => {
+    const initialY = window.innerHeight - windowSize.height - taskbarHeight;
+    setWindowPosition({ x: 100, y: initialY > 0 ? initialY : 0 });
+  }, []);
 
   // Handle folder click in the sidebar
   const handleFolderClick = (path) => {
@@ -108,7 +114,7 @@ const Explorer = ({ onClose }) => {
       enableResizing={!isMaximized} // Disable resizing when maximized
       className="z-50" // Ensure the window is above other elements
     >
-      <div className="flex flex-col h-full bg-white text-gray-900  overflow-hidden">
+      <div className="flex flex-col h-full bg-white text-gray-900 overflow-hidden">
         {/* Top Navigation */}
         <TopNav
           currentPath={currentPath}
@@ -121,7 +127,8 @@ const Explorer = ({ onClose }) => {
           onClose={handleClose}
         />
 
-        <div className="flex flex-1">
+        {/* Main Content Area */}
+        <div className="flex flex-1 overflow-hidden">
           {/* Sidebar */}
           <Sidebar
             currentPath={currentPath}
@@ -129,8 +136,8 @@ const Explorer = ({ onClose }) => {
             folderStructure={folderStructure}
           />
 
-          {/* Main Content */}
-          <div className="flex-1">
+          {/* Content Grid */}
+          <div className=" p-4">
             <Content
               currentPath={currentPath}
               onFolderClick={handleFolderClick}
