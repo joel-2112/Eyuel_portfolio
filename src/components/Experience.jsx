@@ -30,11 +30,9 @@ const ExperienceCard = ({ experience }) => {
       iconStyle={{ background: experience.iconBg, border: "2px solid #e5e7eb" }} // Icon background with light gray border
       icon={
         <div className="flex justify-center items-center w-full h-full">
-          <img
-            src={experience.icon}
-            alt={experience.company_name}
-            className="w-[60%] h-[60%] object-contain"
-          />
+          <span className="text-white font-bold text-[20px]">
+            {experience.company_name.slice(0, 2)}
+          </span>
         </div>
       }
     >

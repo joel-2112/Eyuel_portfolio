@@ -33,9 +33,13 @@ const About = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.5 }}
-        className="text-lg text-gray-600 max-w-2xl mx-auto mb-12"
+        className="text-lg text-gray-600 max-w-2xl mx-auto text-start mb-12"
       >
-        As a passionate software developer, I specialize in creating innovative and user-friendly solutions. With expertise in web and mobile app development, design, and consultation, I bring ideas to life with cutting-edge technology and creativity.
+      I specialize in creating innovative and user-friendly solutions.
+      Hi I am Eyuel Skilled software developer,
+      With experience in web and mobile app development and design 
+      With experience in web and mobile app development and design 
+      I bring ideas to life with cutting-edge technology and creativity.
       </motion.p>
 
       {/* Services Cards */}
