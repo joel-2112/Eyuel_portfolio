@@ -15,6 +15,7 @@ const Contact = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e) => {
     const { target } = e;
@@ -32,21 +33,21 @@ const Contact = () => {
 
     emailjs
       .send(
-        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+        'service_x3s9gt9',
+        'template_3cid0of',
         {
           from_name: form.name,
-          to_name: "Your Name",
+          to_name: "Eyuel",
           from_email: form.email,
-          to_email: "your-email@example.com",
+          to_email: "eyueljoel21@gmail.com",
           message: form.message,
         },
-        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
+        '77YejHliL9fnL75Oc'
       )
       .then(
         () => {
           setLoading(false);
-          alert("Thank you. I will get back to you as soon as possible.");
+          setShowModal(true);
 
           setForm({
             name: "",
@@ -97,7 +98,7 @@ const Contact = () => {
             </label>
             <label className="flex flex-col">
               <span className="text-sm text-gray-700 font-medium mb-1">
-               Email
+                Email
               </span>
               <input
                 type="email"
@@ -139,6 +140,22 @@ const Contact = () => {
           <EarthCanvas />
         </motion.div>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold mb-4 text-blue-700">Success!</h2>
+            <p className="text-blue-700">Your message has been sent successfully.</p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 bg-blue-600 py-2.5 px-6 rounded-lg text-white font-medium hover:bg-blue-700 transition-all"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
