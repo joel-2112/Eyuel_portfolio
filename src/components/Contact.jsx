@@ -4,7 +4,7 @@ import emailjs from "@emailjs/browser";
 
 import EarthCanvas from "../components/canvas/Earth";
 import SectionWrapper from "../hoc/SectionWrapper";
-import { slideIn } from "../utils/motion";
+// import { slideIn } from "../utils/motion";
 
 const Contact = () => {
   const formRef = useRef();
@@ -16,7 +16,24 @@ const Contact = () => {
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  const slideIn = (direction, type, delay, duration) => {
+    return {
+      hidden: {
+        x: direction === "left" ? "-100%" : direction === "right" ? "100%" : 0,
+        y: direction === "up" ? "100%" : direction === "down" ? "100%" : 0,
+      },
+      show: {
+        x: 0,
+        y: 0,
+        transition: {
+          type: type,
+          delay: delay,
+          duration: duration,
+          ease: "easeOut",
+        },
+      },
+    };
+  };
   const handleChange = (e) => {
     const { target } = e;
     const { name, value } = target;
