@@ -66,9 +66,9 @@ const Contact = () => {
   return (
     <div
       id="contact"
-      className="w-full min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+      className="w-full min-h-screen flex items-center justify-center bg-gray-50 py-12 px-8 sm:px-6 lg:px-8"
     >
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 px-6 lg:grid-cols-2 gap-4">
         {/* Contact Form */}
         <motion.div
           variants={slideIn("left", "tween", 0.2, 1)}

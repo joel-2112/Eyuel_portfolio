@@ -1,22 +1,33 @@
 import React, { Suspense, useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Preload, Html } from "@react-three/drei";
+import { OrbitControls, Preload, Html, useTexture } from "@react-three/drei";
 import CanvasLoader from "../Loader";
 
 // Icons for contacts
-import LinkedInIcon from "../../assets/close.svg";
-import GitHubIcon from "../../assets/creator.png";
-import EmailIcon from "../../assets/cmd.png";
+import LinkedInIcon from "../../assets/linkedin.png";
+import GitHubIcon from "../../assets/github.png";
+import EmailIcon from "../../assets/email.png";
 
-// Central Sphere (Sun) with enhanced glow effect
+// Textures for planets
+import LinkedInTexture from "../../assets/linkedin.png"; // Replace with your texture
+import GitHubTexture from "../../assets/github.png"; // Replace with your texture
+import EmailTexture from "../../assets/email.png"; // Replace with your texture
+
+// Sun texture
+import SunTexture from "../../assets/me.jpg"; // Replace with your sun texture
+
+// Central Sphere (Sun) with texture
 const CentralSphere = () => {
+  const sunTexture = useTexture(SunTexture); // Load sun texture
+
   return (
     <mesh position={[0, 0, 0]}>
       <sphereGeometry args={[1.5, 64, 64]} />
       <meshStandardMaterial
-        emissive="orange"
+        map={sunTexture} // Apply sun texture
+        // emissive="orange"
         emissiveIntensity={2}
-        color="yellow"
+        // color="yellow"
       />
     </mesh>
   );
@@ -30,10 +41,11 @@ const PlanetWithIcon = ({
   onPlanetClick,
   orbitRadius,
   speed,
-  color,
+  texture,
 }) => {
   const [hovered, setHovered] = useState(false);
   const planetRef = useRef();
+  const planetTexture = useTexture(texture); // Load texture
 
   // Animate the planet around the central sphere
   useFrame(({ clock }) => {
@@ -50,12 +62,12 @@ const PlanetWithIcon = ({
       onPointerOut={() => setHovered(false)}
       onClick={(e) => onPlanetClick(label, e)}
     >
-      <sphereGeometry args={[0.3, 32, 32]} />
-      <meshStandardMaterial color={hovered ? "lightblue" : color} />
+      <sphereGeometry args={[0.5, 32, 32]} /> {/* Increased planet size */}
+      <meshStandardMaterial map={planetTexture} />
       <Html distanceFactor={10}>
         <div className="pointer-events-none text-center">
           <img src={icon} alt={label} className="w-6 h-6" />
-          {hovered && <p className="text-blue-500 text-xs">{label}</p>}
+          <p className="text-blue-500 text-xs">{label}</p>
         </div>
       </Html>
     </mesh>
@@ -67,7 +79,7 @@ const OrbitLine = ({ radius }) => {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]}>
       <ringGeometry args={[radius - 0.05, radius, 64]} />
-      <meshStandardMaterial color="white" transparent opacity={0.15} />
+      <meshStandardMaterial color="gray" transparent opacity={0.15} />
     </mesh>
   );
 };
@@ -95,7 +107,7 @@ const SolarSystem = () => {
         onPlanetClick={handlePlanetClick}
         orbitRadius={3}
         speed={0.5}
-        color="blue"
+        texture={LinkedInTexture} // Use texture
       />
       <OrbitLine radius={3} />
 
@@ -106,7 +118,7 @@ const SolarSystem = () => {
         onPlanetClick={handlePlanetClick}
         orbitRadius={5}
         speed={0.3}
-        color="purple"
+        texture={GitHubTexture} // Use texture
       />
       <OrbitLine radius={5} />
 
@@ -117,7 +129,7 @@ const SolarSystem = () => {
         onPlanetClick={handlePlanetClick}
         orbitRadius={7}
         speed={0.4}
-        color="green"
+        texture={EmailTexture} // Use texture
       />
       <OrbitLine radius={7} />
 
@@ -158,7 +170,7 @@ const EarthCanvas = () => {
       dpr={[1, 2]}
       gl={{ preserveDrawingBuffer: true }}
       camera={{
-        fov: 30, // Wider field of view
+        fov: 25, // Wider field of view
         near: 0.1,
         far: 200,
         position: [0, 30, 0], // Directly above the scene
@@ -168,11 +180,12 @@ const EarthCanvas = () => {
         <OrbitControls
           autoRotate
           enableZoom={true}
-          enableRotate={true} // Disable rotation
+          enableRotate={true} // Enable rotation
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 3}
         />
-        <pointLight position={[0, 10, 0]} intensity={3} />
+        <ambientLight intensity={0.5} /> {/* Add ambient light */}
+        <pointLight position={[0, 10, 0]} intensity={5} /> {/* Increased light intensity */}
         <SolarSystem />
         <Preload all />
       </Suspense>
