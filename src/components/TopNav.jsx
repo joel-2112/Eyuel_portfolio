@@ -15,7 +15,7 @@ const TopNav = ({
   const pathParts = currentPath.split("/");
 
   return (
-    <div className="bg-white px-4 py-2 border-b flex items-center justify-between shadow-sm">
+    <div className="bg-white px-4 py-2 border-b flex items-center justify-between shadow-sm drag-handle">
       {/* Navigation Buttons */}
       <div className="flex items-center space-x-4">
         {/* Back Button */}

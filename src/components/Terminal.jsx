@@ -172,6 +172,7 @@ const Terminal = ({ onClose }) => {
       minWidth={400}
       minHeight={300}
       bounds="window"
+      dragHandleClassName="drag-handle"
       disableDragging={isMaximized} // Disable dragging when maximized
       enableResizing={!isMaximized} // Disable resizing when maximized
       className={`${isMinimized ? "hidden" : ""}`}
@@ -180,7 +181,7 @@ const Terminal = ({ onClose }) => {
         className="w-full h-full bg-gray-700 text-white font-mono border border-gray-800 rounded-lg flex flex-col"
       >
         {/* Terminal Header */}
-        <div className="terminal-header flex items-center justify-between bg-white text-gray-500 px-3 py-1">
+        <div className="terminal-header drag-handle flex items-center justify-between bg-white text-gray-500 px-3 py-1">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-gray-700 rounded-full"></div>
             <span className="text-sm text-gray-700">Command Prompt</span>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import win from "../assets/wallpaper.png";
 import contacts from "../assets/contact.png";
 import documents from "../assets/doument.svg";
@@ -23,35 +22,66 @@ const Home = () => {
 
   return (
     <div
-      className="relative w-full h-screen z-30 flex flex-col"
-      style={{ backgroundImage: `url(${win})`, backgroundSize: "cover" }}
+      className="relative w-full h-screen bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${win})` }}
     >
       {/* Desktop Icons */}
       <div className="absolute top-10 left-5 text-white text-lg">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col items-center cursor-pointer">
-            <img src={projects} alt="Projects" className="w-12 h-12" />
-            <p>Projects</p>
+            <img
+              src={projects}
+              alt="Projects"
+              className="w-10 h-10 sm:w-12 sm:h-12"
+            />
+            <p className="text-sm sm:text-base">Projects</p>
           </div>
           <div className="flex flex-col items-center cursor-pointer">
-            <img src={documents} alt="Documents" className="w-12 h-12" />
-            <p>Documents</p>
+            <img
+              src={documents}
+              alt="Documents"
+              className="w-10 h-10 sm:w-12 sm:h-12"
+            />
+            <p className="text-sm sm:text-base">Documents</p>
           </div>
           <div className="flex flex-col items-center cursor-pointer">
-            <img src={pictures} alt="Pictures" className="w-12 h-12" />
-            <p>Pictures</p>
+            <img
+              src={pictures}
+              alt="Pictures"
+              className="w-10 h-10 sm:w-12 sm:h-12"
+            />
+            <p className="text-sm sm:text-base">Pictures</p>
           </div>
           <div className="flex flex-col items-center cursor-pointer">
-            <img src={contacts} alt="Contacts" className="w-12 h-12" />
-            <p>Contacts</p>
+            <img
+              src={contacts}
+              alt="Contacts"
+              className="w-10 h-10 sm:w-12 sm:h-12"
+            />
+            <p className="text-sm sm:text-base">Contacts</p>
           </div>
         </div>
       </div>
 
       {/* Taskbar */}
-      <Taskbar onTerminalToggle={handleTerminalToggle} onExplorerToggle={handleExplorerToggle} />
-      {isTerminalOpen && <Terminal onClose={() => setIsTerminalOpen(false)} />}
-      {isExplorerOpen && <Explorer onClose={() => setIsExplorerOpen(false)} />}
+      <Taskbar
+        onTerminalToggle={handleTerminalToggle}
+        onExplorerToggle={handleExplorerToggle}
+      />
+
+      {/* Terminal */}
+      {isTerminalOpen && (
+        <div className="absolute inset-0 flex items-center justify-center z-40">
+          <Terminal onClose={() => setIsTerminalOpen(false)} />
+        </div>
+      )}
+
+      {/* Explorer */}
+      {isExplorerOpen && (
+        <div className="absolute inset-0 flex items-center justify-center z-40">
+          <Explorer onClose={() => setIsExplorerOpen(false)} />
+        </div>
+      )}
     </div>
   );
 };

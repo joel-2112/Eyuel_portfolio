@@ -1,6 +1,5 @@
 import React from "react";
 import FullFolder from "../assets/FullFolder.png";
-import Folder from "../assets/Folder.png";
 import { FileText } from "lucide-react";
 
 const Content = ({ currentPath, onFolderClick, folderStructure }) => {

@@ -50,8 +50,18 @@ const Explorer = ({ onClose }) => {
   };
 
   // Handle refresh
-  const handleRefresh = () => {
-    console.log("Refreshing:", currentPath);
+const handleRefresh = () => {
+    // Create new history entry with same path to trigger refresh
+    const newHistory = [...history];
+    newHistory.push(currentPath);
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+    
+    // Reset current path and re-fetch content
+    setCurrentPath("");
+    setTimeout(() => {
+      setCurrentPath(currentPath);
+    }, 100);
   };
 
   // Handle breadcrumb path click
@@ -107,11 +117,11 @@ const Explorer = ({ onClose }) => {
         });
         setWindowPosition(position);
       }}
-      minWidth={400}
-      minHeight={300}
+      minWidth={100}
+      minHeight={100}
       bounds="parent" // Restrict dragging within the parent container
-      disableDragging={isMaximized} // Disable dragging when maximized
       enableResizing={!isMaximized} // Disable resizing when maximized
+      dragHandleClassName="drag-handle" // Specify the drag handle class name
       className="z-50" // Ensure the window is above other elements
     >
       <div className="flex flex-col h-full bg-white text-gray-900 overflow-hidden">
@@ -125,6 +135,7 @@ const Explorer = ({ onClose }) => {
           onMinimize={handleMinimize}
           onMaximize={handleMaximize}
           onClose={handleClose}
+          className="drag-handle" // Add the drag handle class to the TopNav
         />
 
         {/* Main Content Area */}
@@ -137,7 +148,7 @@ const Explorer = ({ onClose }) => {
           />
 
           {/* Content Grid */}
-          <div className=" p-4">
+          <div className="p-4">
             <Content
               currentPath={currentPath}
               onFolderClick={handleFolderClick}

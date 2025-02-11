@@ -18,7 +18,7 @@ const Sidebar = ({ currentPath, onFolderClick, folderStructure }) => {
         const isExpanded = expandedFolders[path];
 
         return (
-            <div key={path} className="ml-2">
+            <div key={path} className="ml-2 ">
                 <div
                     className={`flex items-center cursor-pointer px-2 py-1 rounded-md ${
                         currentPath === path ? "bg-gray-300 text-gray-900" : "hover:bg-gray-200 text-gray-700"
