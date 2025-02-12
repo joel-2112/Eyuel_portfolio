@@ -14,7 +14,7 @@ const Content = ({ currentPath, onFolderClick, folderStructure }) => {
         } else if (item.name.endsWith(".txt")) {
             return <FileType2 className="w-16 h-16 text-blue-500" />;
         } else {
-            return <File className="w-16 h-16 text-gray-500" />;
+            return <ImageIcon className="w-16 h-16 text-blue-500" />;
         }
     };
 

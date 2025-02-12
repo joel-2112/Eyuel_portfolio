@@ -12,6 +12,7 @@ import NodePDF from "../assets/files/Eyuel_cv.pdf";
 import SecurityPDF from "../assets/files/Eyuel_cv.pdf";
 import HobbiesTXT from "../assets/files/Eyuel_cv.pdf";
 import ExampleTXT from "../assets/files/Eyuel_cv.pdf";
+import me from "../assets/me.jpg";
 export const folderStructure = [
     { name: "Quick access", type: "folder", children: [] },
     { name: "OneDrive", type: "folder", children: [] },
@@ -108,7 +109,7 @@ export const folderStructure = [
           name: "Pictures",
           type: "folder",
           children: [
-            { name: "Vacation", type: "folder", children: [] },
+            { name: "Vacation", type: "file", path: me },
             { name: "Family", type: "folder", children: [] },
           ],
         },
