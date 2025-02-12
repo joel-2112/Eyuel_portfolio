@@ -1,19 +1,30 @@
 import React from "react";
 import FullFolder from "../assets/FullFolder.png";
-import { FileText } from "lucide-react";
+import { FileText, ImageIcon, File, FileType2 } from "lucide-react";
 
 const Content = ({ currentPath, onFolderClick, folderStructure }) => {
-    const getIcon = (type) => {
-        return type === "folder" ? (
-            <img src={FullFolder} alt="Folder" className="w-16 h-20" />
-        ) : (
-            <FileText className="w-16 h-16 text-blue-500" />
-        );
+    // Helper function to get the appropriate icon based on file type
+    const getIcon = (item) => {
+        if (item.type === "folder") {
+            return <img src={FullFolder} alt="Folder" className="w-16 h-20" />;
+        } else if (item.name.endsWith(".pdf")) {
+            return <FileText className="w-16 h-16 text-red-500" />;
+        } else if (item.name.endsWith(".jpg") || item.name.endsWith(".png")) {
+            return <ImageIcon className="w-16 h-16 text-green-500" />;
+        } else if (item.name.endsWith(".txt")) {
+            return <FileType2 className="w-16 h-16 text-blue-500" />;
+        } else {
+            return <File className="w-16 h-16 text-gray-500" />;
+        }
     };
 
+    // Handle item click (folder or file)
     const handleItemClick = (item) => {
         if (item.type === "folder" && onFolderClick) {
             onFolderClick(`${currentPath}/${item.name}`); // Notify parent component about folder click
+        } else if (item.type === "file" && item.path) {
+            // Open file in a new tab or download it
+            window.open(item.path, "_blank");
         }
     };
 
@@ -44,7 +55,7 @@ const Content = ({ currentPath, onFolderClick, folderStructure }) => {
                         onClick={() => handleItemClick(item)}
                     >
                         <div className="w-16 h-20 flex items-center justify-center">
-                            {getIcon(item.type)}
+                            {getIcon(item)}
                         </div>
                         <span className="text-xs text-gray-700 truncate mt-2 text-center w-full">
                             {item.name}

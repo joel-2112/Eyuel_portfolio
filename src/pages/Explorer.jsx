@@ -5,7 +5,7 @@ import TopNav from "../components/TopNav";
 import Content from "../components/content";
 import { folderStructure } from "../data/FolderStructure";
 
-const Explorer = ({ onClose }) => {
+const Explorer = ({ onClose,newPath }) => {
   const [currentPath, setCurrentPath] = useState("This PC");
   const [history, setHistory] = useState(["This PC"]);
   const [historyIndex, setHistoryIndex] = useState(0);
@@ -150,6 +150,7 @@ const handleRefresh = () => {
           {/* Content Grid */}
           <div className="p-4">
             <Content
+             newPath={newPath}
               currentPath={currentPath}
               onFolderClick={handleFolderClick}
               folderStructure={folderStructure}

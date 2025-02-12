@@ -5,7 +5,8 @@ import { FaComments, FaLightbulb, FaUsers, FaPaintBrush, FaRunning } from "react
 
 // Icons for Programming Languages
 import { FaJs, FaPython } from "react-icons/fa";
-import { SiDart, SiHtml5, SiCss3 } from "react-icons/si";
+import { FaFlutter } from "react-icons/fa6";
+import { SiDart, SiHtml5, SiCss3, SiMongodb } from "react-icons/si";
 
 // Icons for Frameworks/Libraries
 import { SiDjango, SiNodedotjs, SiExpress, SiReact, SiTailwindcss, SiPostgresql, SiMysql } from "react-icons/si";
@@ -98,6 +99,11 @@ const Skills = () => {
               <SiDjango className="w-6 h-6 text-green-700" />
               <span>Django</span>
             </div>
+            {/* flutter */}
+            <div className="flex items-center space-x-2">
+              <FaFlutter className="w-6 h-6 text-blue-700" />
+              <span>Flutter</span>
+            </div>
 
             {/* Node.js */}
             <div className="flex items-center space-x-2">
@@ -127,6 +133,11 @@ const Skills = () => {
             <div className="flex items-center space-x-2">
               <SiPostgresql className="w-6 h-6 text-blue-800" />
               <span>PostgreSQL</span>
+            </div>
+            {/* mongodb */}
+            <div className="flex items-center space-x-2">
+              <SiMongodb className="w-6 h-6 text-green-800" />
+              <span>MongoDB</span>
             </div>
 
             {/* MySQL */}

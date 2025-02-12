@@ -205,7 +205,7 @@ const Taskbar = ({ onTerminalToggle, onExplorerToggle }) => {
         {showSuggestions && (
           <div
             ref={suggestionsRef}
-            className="absolute left-0 bottom-11 bg-white text-gray-900 rounded-sm shadow-lg p-2 w-full"
+            className="absolute left-0 bottom-11 bg-white text-gray-900 rounded-sm min-w-[200px] shadow-lg p-2 w-full"
           >
             <p className="text-center font-semibold mb-2">Most Important Links</p>
             <hr className="mb-2" />
