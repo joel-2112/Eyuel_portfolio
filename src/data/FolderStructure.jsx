@@ -12,6 +12,10 @@ import NodePDF from "../assets/files/Eyuel_cv.pdf";
 import SecurityPDF from "../assets/files/Eyuel_cv.pdf";
 import HobbiesTXT from "../assets/files/Eyuel_cv.pdf";
 import ExampleTXT from "../assets/files/Eyuel_cv.pdf";
+import dart from "../assets/files/certificates/dart.pdf";
+import flutter from "../assets/files/certificates/flutter.pdf";
+import react from "../assets/files/certificates/react.pdf";
+import python from "../assets/files/certificates/python.pdf";
 import me from "../assets/me.jpg";
 export const folderStructure = [
     { name: "Quick access", type: "folder", children: [] },
@@ -85,11 +89,10 @@ export const folderStructure = [
               name: "Certificates",
               type: "folder",
               children: [
-                { name: "React.pdf", type: "file", path: ReactPDF },
-                { name: "Python.pdf", type: "file", path: PythonPDF },
-                { name: "cyber.pdf", type: "file", path: CyberPDF },
-                { name: "Dart.pdf", type: "file", path: DartPDF },
-                { name: "Node.pdf", type: "file", path: NodePDF },
+                { name: "React.pdf", type: "file", path: react },
+                { name: "Python.pdf", type: "file", path: python },
+                { name: "Dart.pdf", type: "file", path: dart },
+                { name: "flutter.pdf", type: "file", path: flutter },
               ],
             },
             {

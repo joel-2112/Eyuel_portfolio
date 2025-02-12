@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronRight, FileText, ImageIcon, File, FileType2 } from "lucide-react";
 import FolderIcon from "./FolderIcon";
+import { FaFilePdf } from "react-icons/fa";
 
 const Sidebar = ({ currentPath, onFolderClick, folderStructure }) => {
     const [expandedFolders, setExpandedFolders] = useState({});
@@ -16,9 +17,9 @@ const Sidebar = ({ currentPath, onFolderClick, folderStructure }) => {
     // Get the appropriate icon for files
     const getFileIcon = (name) => {
         if (name.endsWith(".pdf")) {
-            return <FileText className="w-4 h-4 text-red-500" />;
+            return <FaFilePdf className="w-4 h-4 text-red-500" />;
         } else if (name.endsWith(".jpg") || name.endsWith(".png")) {
-            return <ImageIcon className="w-4 h-4 text-green-500" />;
+            return <ImageIcon className="w-4 h-4 text-blue-500" />;
         } else if (name.endsWith(".txt")) {
             return <FileType2 className="w-4 h-4 text-blue-500" />;
         } else {
