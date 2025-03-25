@@ -117,10 +117,10 @@ import {
   const experiences = [
     {
       title: "MERN stack Developer",
-      company_name: "STC",
+      company_name: "Bahir Dar science and Technology Comission",
       icon: "ST",
       iconBg: "#383E56",
-      date: "March 2023 - jun 2023",
+      date: "March 2023 - Nov 2023",
       points: [
         "Developing and maintaining web applications using MERN stack (MongoDB, Express.js, React.js, Node.js) ",
         "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
@@ -128,37 +128,39 @@ import {
     },
     {
       title: "Flutter Developer",
-      company_name: "Training Team",
-      icon: "TD",
+      company_name: "Bahir Dar Institute of Technology",
+      icon: "BD",
       iconBg: "#E6DEDD",
-      date: "mar 2023 - Feb 2024",
+      date: "Feb 2023 - Jun 2024",
       points: [
         "Developing and maintaining Mobile application using Flutter",
         "Develop and deliver fully functional app using Flutter and firebase",
-        "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-      ],
-    },
-    {
-      title: "Backend Instructor & TM",
-      company_name: "TDT",
-      icon: shopify,
-      iconBg: "#383E56",
-      date: "mar 2024 - may 2024",
-      points: [
-        "Taught backend development using Node.js, expres.js  and PostgreSQL database to selected software developement trainees  ",
-        "provide students roadmaps for backend development and help them to build their own projects",
+        "Developed high-performance cross-platform mobile applications using Flutter, ensuring seamless functionality and user satisfaction.",
       ],
     },
     {
       title: "Django Developer",
-      company_name: "Self Experienced",
-      icon: "JO",
-      iconBg: "#E6DEDD",
-      date: "jun 2024 - Present",
+      company_name: "Prodigy Info Tech",
+      icon: "PT",
+      iconBg: "#383E56",
+      date: "Feb 2025 - Mar 2025",
       points: [
-        "Developing and maintaining web applications using Django , Django rest framework",
-        "Implementing responsive design and ensuring cross-browser compatibility.",
-        "Develope and deploy different RESTful API's for different projects",
+        "Designed and developed scalable backend systems using Django and Django REST Framework (DRF), ensuring efficient API performance",
+        "Developed and maintained web applications using Django, Django REST framework, and PostgreSQL.",
+        "Integrated third-party APIs to enhance application functionality and user experience.",],
+    },
+    {
+      title: "Laravel Developer",
+      company_name: "Gerizan Technology plc",
+      icon: "GT",
+      iconBg: "#E6DEDD",
+      date: "Feb 2025 - Present",
+      points: [
+        "Developed and maintained web applications using Laravel, PHP, and MySQL.",
+        "Collaborated with cross-functional teams to design and implement new features and enhancements.",
+        "integrate with flutter and develope delivery app",
+        "Developed RESTful APIs to support web and mobile applications.",
+
       ],
     },
   ];
