@@ -5,6 +5,7 @@ import About from "./About";
 import Experience from "./Experience";
 import Works from "./Works";
 import Contact from "./Contact";
+import Projects from "./Projects";
 
 const FirstScreen = () => {
   return (
@@ -13,8 +14,9 @@ const FirstScreen = () => {
         <Navbar />
         <Hero />
       </div>
-      <About />
       <Experience />
+      <Projects />
+      <About/>
       <div className="relative z-0">
         <Contact />
       </div>
