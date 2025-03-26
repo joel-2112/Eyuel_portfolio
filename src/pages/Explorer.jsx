@@ -5,24 +5,30 @@ import TopNav from "../components/TopNav";
 import Content from "../components/content";
 import { folderStructure } from "../data/FolderStructure";
 
-const Explorer = ({ onClose,newPath }) => {
-  const [currentPath, setCurrentPath] = useState("This PC");
-  const [history, setHistory] = useState(["This PC"]);
+const Explorer = ({ onClose, newPath }) => {
+  const [currentPath, setCurrentPath] = useState(newPath || "This PC");
+  const [history, setHistory] = useState([newPath || "This PC"]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [isMaximized, setIsMaximized] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [windowSize, setWindowSize] = useState({ width: 800, height: 600 });
-  const [windowPosition, setWindowPosition] = useState({ x: 100, y: 100 });
+  const [windowSize, setWindowSize] = useState({
+    width: Math.min(800, window.innerWidth * 0.9),
+    height: Math.min(600, window.innerHeight * 0.85),
+  });
+  const [windowPosition, setWindowPosition] = useState({ x: 0, y: 0 });
 
-  const taskbarHeight = 48; // Height of the Taskbar
+  const taskbarHeight = 48;
+  const minSidebarWidth = 150;
 
-  // Set initial position to avoid overlapping with the Taskbar
   useEffect(() => {
-    const initialY = window.innerHeight - windowSize.height - taskbarHeight;
-    setWindowPosition({ x: 100, y: initialY > 0 ? initialY : 0 });
+    const initialWidth = Math.min(800, window.innerWidth * 0.9);
+    const initialHeight = Math.min(600, window.innerHeight * 0.85);
+    const initialX = (window.innerWidth - initialWidth) / 2;
+    const initialY = (window.innerHeight - initialHeight - taskbarHeight) / 2;
+    setWindowSize({ width: initialWidth, height: initialHeight });
+    setWindowPosition({ x: initialX > 0 ? initialX : 10, y: initialY > 0 ? initialY : 10 });
   }, []);
 
-  // Handle folder click in the sidebar
   const handleFolderClick = (path) => {
     const newHistory = history.slice(0, historyIndex + 1);
     newHistory.push(path);
@@ -31,7 +37,6 @@ const Explorer = ({ onClose,newPath }) => {
     setCurrentPath(path);
   };
 
-  // Handle back navigation
   const handleNavigateBack = () => {
     if (historyIndex > 0) {
       const newIndex = historyIndex - 1;
@@ -40,7 +45,6 @@ const Explorer = ({ onClose,newPath }) => {
     }
   };
 
-  // Handle forward navigation
   const handleNavigateForward = () => {
     if (historyIndex < history.length - 1) {
       const newIndex = historyIndex + 1;
@@ -49,22 +53,15 @@ const Explorer = ({ onClose,newPath }) => {
     }
   };
 
-  // Handle refresh
-const handleRefresh = () => {
-    // Create new history entry with same path to trigger refresh
+  const handleRefresh = () => {
     const newHistory = [...history];
     newHistory.push(currentPath);
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
-    
-    // Reset current path and re-fetch content
     setCurrentPath("");
-    setTimeout(() => {
-      setCurrentPath(currentPath);
-    }, 100);
+    setTimeout(() => setCurrentPath(currentPath), 100);
   };
 
-  // Handle breadcrumb path click
   const handlePathClick = (path) => {
     const newIndex = history.indexOf(path);
     if (newIndex !== -1) {
@@ -73,37 +70,47 @@ const handleRefresh = () => {
     }
   };
 
-  // Handle minimize
-  const handleMinimize = () => {
-    setIsMinimized(true);
-  };
+  const handleMinimize = () => setIsMinimized(true);
 
-  // Handle maximize
   const handleMaximize = () => {
     if (isMaximized) {
-      // Restore to default size and position
-      setWindowSize({ width: 800, height: 600 });
-      setWindowPosition({ x: 100, y: 100 });
-    } else {
-      // Maximize to full screen, accounting for the Taskbar height
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight - taskbarHeight,
+      const restoredWidth = Math.min(800, window.innerWidth * 0.9);
+      const restoredHeight = Math.min(600, window.innerHeight * 0.85);
+      setWindowSize({ width: restoredWidth, height: restoredHeight });
+      setWindowPosition({
+        x: (window.innerWidth - restoredWidth) / 2,
+        y: (window.innerHeight - restoredHeight - taskbarHeight) / 2,
       });
+    } else {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight - taskbarHeight });
       setWindowPosition({ x: 0, y: 0 });
     }
     setIsMaximized((prev) => !prev);
   };
 
-  // Handle close
-  const handleClose = () => {
-    onClose();
+  const handleClose = () => onClose();
+
+  const handleResize = () => {
+    if (!isMaximized) {
+      const newWidth = Math.max(minSidebarWidth + 100, Math.min(800, window.innerWidth * 0.9));
+      const newHeight = Math.min(600, window.innerHeight * 0.85);
+      setWindowSize({ width: newWidth, height: newHeight });
+      setWindowPosition({
+        x: (window.innerWidth - newWidth) / 2,
+        y: (window.innerHeight - newHeight - taskbarHeight) / 2,
+      });
+    } else {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight - taskbarHeight });
+      setWindowPosition({ x: 0, y: 0 });
+    }
   };
 
-  // If minimized, don't render the window
-  if (isMinimized) {
-    return null;
-  }
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMaximized]);
+
+  if (isMinimized) return null;
 
   return (
     <Rnd
@@ -111,20 +118,21 @@ const handleRefresh = () => {
       position={{ x: windowPosition.x, y: windowPosition.y }}
       onDragStop={(e, d) => setWindowPosition({ x: d.x, y: d.y })}
       onResizeStop={(e, direction, ref, delta, position) => {
-        setWindowSize({
-          width: ref.style.width,
-          height: ref.style.height,
-        });
+        const newWidth = parseInt(ref.style.width);
+        const newHeight = parseInt(ref.style.height);
+        setWindowSize({ width: newWidth, height: newHeight });
         setWindowPosition(position);
       }}
-      minWidth={100}
-      minHeight={100}
-      bounds="parent" // Restrict dragging within the parent container
-      enableResizing={!isMaximized} // Disable resizing when maximized
-      dragHandleClassName="drag-handle" // Specify the drag handle class name
-      className="z-50" // Ensure the window is above other elements
+      minWidth={minSidebarWidth + 100} // Ensure sidebar + some content space
+      minHeight={200}
+      maxWidth="100vw"
+      maxHeight={`calc(100vh - ${taskbarHeight}px)`}
+      bounds="window"
+      enableResizing={!isMaximized}
+      dragHandleClassName="drag-handle"
+      className="z-50 shadow-xl rounded-lg overflow-hidden border border-gray-300"
     >
-      <div className="flex flex-col h-full bg-white text-gray-900 overflow-hidden">
+      <div className="flex flex-col h-full bg-gray-100 text-gray-900">
         {/* Top Navigation */}
         <TopNav
           currentPath={currentPath}
@@ -135,22 +143,27 @@ const handleRefresh = () => {
           onMinimize={handleMinimize}
           onMaximize={handleMaximize}
           onClose={handleClose}
-          className="drag-handle" // Add the drag handle class to the TopNav
+          className="drag-handle bg-gray-200 border-b border-gray-300"
         />
 
         {/* Main Content Area */}
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar */}
-          <Sidebar
-            currentPath={currentPath}
-            onFolderClick={handleFolderClick}
-            folderStructure={folderStructure}
-          />
+          <div
+            className="w-1/3 sm:w-1/4 md:w-1/5 lg:w-1/6 min-w-[150px] max-w-[300px] bg-white border-r border-gray-200 overflow-y-auto transition-all duration-200"
+            style={{ flexShrink: 0 }}
+          >
+            <Sidebar
+              currentPath={currentPath}
+              onFolderClick={handleFolderClick}
+              folderStructure={folderStructure}
+            />
+          </div>
 
           {/* Content Grid */}
-          <div className="p-4">
+          <div className="flex-1 p-2 sm:p-3 lg:p-4 bg-white overflow-y-auto">
             <Content
-             newPath={newPath}
+              newPath={newPath}
               currentPath={currentPath}
               onFolderClick={handleFolderClick}
               folderStructure={folderStructure}

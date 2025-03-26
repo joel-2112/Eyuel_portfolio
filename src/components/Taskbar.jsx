@@ -16,207 +16,129 @@ const Taskbar = ({ onTerminalToggle, onExplorerToggle }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showStartMenu, setShowStartMenu] = useState(false); // State for Start Menu visibility
-  const [selectedNav, setSelectedNav] = useState("all"); // State for selected navigation link
+  const [showStartMenu, setShowStartMenu] = useState(false);
+  const [selectedNav, setSelectedNav] = useState("all");
   const location = useLocation();
-  const startMenuRef = useRef(null); // Ref for the Start Menu modal
-  const searchInputRef = useRef(null); // Ref for the search input
-  const suggestionsRef = useRef(null); // Ref for the suggestions dropdown
+  const startMenuRef = useRef(null);
+  const searchInputRef = useRef(null);
+  const suggestionsRef = useRef(null);
 
-  // Update time every second
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Handle Start Menu toggle
-  const toggleStartMenu = () => {
-    setShowStartMenu((prev) => !prev);
-  };
+  const toggleStartMenu = () => setShowStartMenu((prev) => !prev);
+  const handleNavClick = (nav) => setSelectedNav(nav);
 
-  // Handle navigation link click
-  const handleNavClick = (nav) => {
-    setSelectedNav(nav);
-  };
-
-  // Render content based on selected navigation
   const renderContent = () => {
     switch (selectedNav) {
-      case "all":
-        return <AllContent />;
-      case "skills":
-        return <Skills />;
-      case "tools":
-        return <Tools />;
-      default:
-        return <AllContent />;
+      case "all": return <AllContent />;
+      case "skills": return <Skills />;
+      case "tools": return <Tools />;
+      default: return <AllContent />;
     }
   };
 
-  // Close Start Menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        startMenuRef.current &&
-        !startMenuRef.current.contains(event.target) &&
-        !event.target.closest(".start-button") // Ensure the Start button doesn't close the modal
-      ) {
+      if (startMenuRef.current && !startMenuRef.current.contains(event.target) && !event.target.closest(".start-button")) {
         setShowStartMenu(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle clicks outside the suggestions dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        suggestionsRef.current &&
-        !suggestionsRef.current.contains(event.target) &&
-        !searchInputRef.current.contains(event.target) // Ensure the search input doesn't close the dropdown
-      ) {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target) && !searchInputRef.current.contains(event.target)) {
         setShowSuggestions(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // List of search suggestions
   const searchSuggestions = [
-    {
-      name: "YouTube",
-      icon: <FaYoutube className="w-5 h-5 text-red-600" />,
-      url: "https://youtube.com",
-    },
-    {
-      name: "DeepSeek",
-      icon: <SiOpenaigym className="w-5 h-5 text-blue-500" />,
-      url: "https://deepseek.com",
-    },
-    {
-      name: "ChatGPT",
-      icon: <SiOpenai className="w-5 h-5 text-green-500" />,
-      url: "https://chat.openai.com",
-    },
-    {
-      name: "GitHub Copilot",
-      icon: <SiGithubcopilot className="w-5 h-5 text-blue-500" />,
-      url: "https://copilot.github.com",
-    },
-    {
-      name: "Google",
-      icon: <FaGoogle className="w-5 h-5 text-blue-500" />,
-      url: "https://google.com",
-    },
-    {
-      name: "Telegram",
-      icon: <SiTelegram className="w-5 h-5 text-blue-400" />,
-      url: "https://telegram.org",
-    },
-    {
-      name: "LinkedIn",
-      icon: <FaLinkedin className="w-5 h-5 text-blue-600" />,
-      url: "https://linkedin.com",
-    },
-    {
-      name: "Twitter",
-      icon: <FaTwitter className="w-5 h-5 text-blue-400" />,
-      url: "https://twitter.com",
-    },
-    {
-      name: "Figma",
-      icon: <SiFigma className="w-5 h-5 text-purple-600" />,
-      url: "https://figma.com",
-    },
+    { name: "YouTube", icon: <FaYoutube className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />, url: "https://youtube.com" },
+    { name: "DeepSeek", icon: <SiOpenaigym className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />, url: "https://deepseek.com" },
+    { name: "ChatGPT", icon: <SiOpenai className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />, url: "https://chat.openai.com" },
+    { name: "GitHub Copilot", icon: <SiGithubcopilot className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />, url: "https://copilot.github.com" },
+    { name: "Google", icon: <FaGoogle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />, url: "https://google.com" },
+    { name: "Telegram", icon: <SiTelegram className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />, url: "https://telegram.org" },
+    { name: "LinkedIn", icon: <FaLinkedin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />, url: "https://linkedin.com" },
+    { name: "Twitter", icon: <FaTwitter className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />, url: "https://twitter.com" },
+    { name: "Figma", icon: <SiFigma className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />, url: "https://figma.com" },
   ];
 
   return (
-    <div className="fixed bottom-0 w-full h-12 bg-gray-200 flex items-center px-4 text-black shadow-lg border-gray-300">
+    <div className="fixed bottom-0 w-full h-12 sm:h-14 bg-gray-200 flex items-center px-2 sm:px-4 text-black shadow-lg z-50">
       {/* Start Button */}
       <div
-        className="flex items-center cursor-pointer p-2 hover:bg-gray-300 rounded-lg start-button"
+        className="flex items-center cursor-pointer p-1 sm:p-2 hover:bg-gray-300 rounded-lg start-button transition-all duration-200"
         onClick={toggleStartMenu}
       >
-        <img src={start} alt="Start" className="w-5 h-5" />
+        <img src={start} alt="Start" className="w-5 h-5 sm:w-6 sm:h-6" />
       </div>
 
       {/* Start Menu Modal */}
       {showStartMenu && (
         <div
           ref={startMenuRef}
-          className="absolute bottom-12 left-1 w-[90vw] sm:w-[500px] bg-white max-h-[400px] overflow-hidden rounded-t-lg shadow-lg"
+          className="absolute bottom-14 left-1 w-11/12 sm:w-[400px] lg:w-[500px] bg-white max-h-[70vh] sm:max-h-[400px] overflow-hidden rounded-t-lg shadow-xl transition-all duration-200"
         >
-          {/* Top Navigation Links */}
-          <div className="flex justify-around p-2 border-b">
+          <div className="flex justify-around p-2 sm:p-3 border-b border-gray-200">
             <button
-              className={`p-2 hover:bg-gray-200 rounded ${
-                selectedNav === "all" ? "font-bold" : ""
-              }`}
+              className={`px-2 sm:px-3 py-1 hover:bg-gray-200 rounded text-sm sm:text-base ${selectedNav === "all" ? "font-bold text-blue-600" : "text-gray-700"}`}
               onClick={() => handleNavClick("all")}
             >
               All
             </button>
             <button
-              className={`p-2 hover:bg-gray-200 rounded ${
-                selectedNav === "skills" ? "font-bold" : ""
-              }`}
+              className={`px-2 sm:px-3 py-1 hover:bg-gray-200 rounded text-sm sm:text-base ${selectedNav === "skills" ? "font-bold text-blue-600" : "text-gray-700"}`}
               onClick={() => handleNavClick("skills")}
             >
               Skills
             </button>
             <button
-              className={`p-2 hover:bg-gray-200 rounded ${
-                selectedNav === "tools" ? "font-bold" : ""
-              }`}
+              className={`px-2 sm:px-3 py-1 hover:bg-gray-200 rounded text-sm sm:text-base ${selectedNav === "tools" ? "font-bold text-blue-600" : "text-gray-700"}`}
               onClick={() => handleNavClick("tools")}
             >
               Tools
             </button>
           </div>
-
-          {/* Bottom Content Section - Scrollable */}
-          <div className="overflow-y-auto max-h-[calc(400px-48px)] p-4">
+          <div className="overflow-y-auto max-h-[calc(70vh-48px)] sm:max-h-[calc(400px-56px)] p-3 sm:p-4">
             {renderContent()}
           </div>
         </div>
       )}
 
       {/* Search Field */}
-      <div className="relative ml-4 flex justify-center border-t items-center bg-white rounded-sm flex-grow h-12 max-w-xs">
-        <Search className="mx-2 text-gray-500" />
+      <div className="relative ml-2 sm:ml-4 flex items-center bg-white rounded-md flex-grow max-w-[200px] sm:max-w-xs h-8 sm:h-10">
+        <Search className="mx-1 sm:mx-2 w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
         <input
           ref={searchInputRef}
           type="text"
           placeholder="Type here to search"
-          className="bg-transparent outline-none placeholder-gray-400 text-sm text-black w-full h-full"
+          className="bg-transparent outline-none placeholder-gray-400 text-xs sm:text-sm text-black w-full h-full px-1 sm:px-2"
           onFocus={() => setShowSuggestions(true)}
         />
         {showSuggestions && (
           <div
             ref={suggestionsRef}
-            className="absolute left-0 bottom-11 bg-white text-gray-900 rounded-sm min-w-[200px] shadow-lg p-2 w-full"
+            className="absolute left-0 bottom-10 sm:bottom-12 bg-white text-gray-900 rounded-md w-full max-w-[200px] sm:max-w-xs shadow-lg p-2 sm:p-3 transition-all duration-200"
           >
-            <p className="text-center font-semibold mb-2">Most Important Links</p>
+            <p className="text-center font-semibold text-xs sm:text-sm mb-2">Most Important Links</p>
             <hr className="mb-2" />
-            <ul>
+            <ul className="space-y-1">
               {searchSuggestions.map((suggestion, index) => (
                 <li key={index}>
                   <a
                     href={suggestion.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2"
+                    className="p-1 sm:p-2 hover:bg-gray-100 rounded flex items-center space-x-2 text-xs sm:text-sm"
                   >
                     {suggestion.icon}
                     <span>{suggestion.name}</span>
@@ -229,112 +151,91 @@ const Taskbar = ({ onTerminalToggle, onExplorerToggle }) => {
       </div>
 
       {/* App Icons (Desktop) */}
-      <div className="hidden md:flex gap-3 ml-4 py-1">
+      <div className="hidden md:flex gap-2 sm:gap-3 ml-2 sm:ml-4 py-1">
         <button
           onClick={onExplorerToggle}
-          className={`p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 cursor-pointer ${
-            location.pathname === "/explorer" ? "border-b-2 border-blue-500" : ""
-          }`}
+          className={`p-1 sm:p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 ${location.pathname === "/explorer" ? "border-b-2 border-blue-500" : ""}`}
         >
-          <img src={folderIcon} alt="Explorer" className="w-8 h-8" />
+          <img src={folderIcon} alt="Explorer" className="w-6 h-6 sm:w-8 sm:h-8" />
         </button>
-
         <button
           onClick={onTerminalToggle}
-          className={`p-2 rounded-lg bg-transparent hover:bg-gray-300 transition-colors duration-200 cursor-pointer ${
-            location.pathname === "/terminal" ? "border-b-2 border-blue-500" : ""
-          }`}
+          className={`p-1 sm:p-2 rounded-lg bg-transparent hover:bg-gray-300 transition-colors duration-200 ${location.pathname === "/terminal" ? "border-b-2 border-blue-500" : ""}`}
         >
-          <img src={terminalIcon} alt="Terminal" className="w-9 h-8" />
+          <img src={terminalIcon} alt="Terminal" className="w-7 h-7 sm:w-9 sm:h-8" />
         </button>
-
         <a
           href="https://www.microsoft.com/edge"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 cursor-pointer"
+          className="p-1 sm:p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200"
         >
-          <img src={edgeIcon} alt="Edge" className="w-7 h-7" />
+          <img src={edgeIcon} alt="Edge" className="w-5 h-5 sm:w-7 sm:h-7" />
         </a>
-
         <a
           href="https://www.google.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 cursor-pointer"
+          className="p-1 sm:p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200"
         >
-          <img src={chromeIcon} alt="Chrome" className="w-8 h-8" />
+          <img src={chromeIcon} alt="Chrome" className="w-6 h-6 sm:w-8 sm:h-8" />
         </a>
       </div>
 
       {/* Mobile Toggle Button */}
       <div
-        className="md:hidden ml-4 cursor-pointer p-2 hover:bg-gray-300 rounded-lg"
+        className="md:hidden ml-2 sm:ml-4 cursor-pointer p-1 sm:p-2 hover:bg-gray-300 rounded-lg transition-all duration-200"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
-        <Menu className="w-6 h-6" />
+        <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
       </div>
 
-      {/* App Icons (Mobile - Hidden by default) */}
+      {/* App Icons (Mobile) */}
       {showMobileMenu && (
-        <div className="md:hidden absolute bottom-12 left-0 w-full bg-gray-200 flex flex-col items-start p-2 shadow-lg">
+        <div className="md:hidden absolute bottom-14 left-0 w-full bg-gray-200 flex flex-col items-start p-2 sm:p-3 shadow-lg transition-all duration-200">
           <button
             onClick={onExplorerToggle}
-            className={`p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 cursor-pointer w-full text-left ${
-              location.pathname === "/explorer" ? "border-b-2 border-blue-500" : ""
-            }`}
+            className={`p-2 hover:bg-gray-300 rounded-lg w-full text-left flex items-center space-x-2 text-sm ${location.pathname === "/explorer" ? "border-b-2 border-blue-500" : ""}`}
           >
-            <img src={folderIcon} alt="Explorer" className="w-8 h-8 inline-block" />
-            <span className="ml-2">Explorer</span>
+            <img src={folderIcon} alt="Explorer" className="w-6 h-6" />
+            <span>Explorer</span>
           </button>
-
           <button
             onClick={onTerminalToggle}
-            className={`p-2 rounded-lg bg-transparent hover:bg-gray-300 transition-colors duration-200 cursor-pointer w-full text-left ${
-              location.pathname === "/terminal" ? "border-b-2 border-blue-500" : ""
-            }`}
+            className={`p-2 hover:bg-gray-300 rounded-lg w-full text-left flex items-center space-x-2 text-sm ${location.pathname === "/terminal" ? "border-b-2 border-blue-500" : ""}`}
           >
-            <img src={terminalIcon} alt="Terminal" className="w-9 h-8 inline-block" />
-            <span className="ml-2">Terminal</span>
+            <img src={terminalIcon} alt="Terminal" className="w-7 h-7" />
+            <span>Terminal</span>
           </button>
-
           <a
             href="https://www.microsoft.com/edge"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 cursor-pointer w-full text-left"
+            className="p-2 hover:bg-gray-300 rounded-lg w-full text-left flex items-center space-x-2 text-sm"
           >
-            <img src={edgeIcon} alt="Edge" className="w-7 h-7 inline-block" />
-            <span className="ml-2">Edge</span>
+            <img src={edgeIcon} alt="Edge" className="w-5 h-5" />
+            <span>Edge</span>
           </a>
-
           <a
             href="https://www.google.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 bg-transparent rounded-lg hover:bg-gray-300 transition-colors duration-200 cursor-pointer w-full text-left"
+            className="p-2 hover:bg-gray-300 rounded-lg w-full text-left flex items-center space-x-2 text-sm"
           >
-            <img src={chromeIcon} alt="Chrome" className="w-8 h-8 inline-block" />
-            <span className="ml-2">Chrome</span>
+            <img src={chromeIcon} alt="Chrome" className="w-6 h-6" />
+            <span>Chrome</span>
           </a>
         </div>
       )}
 
-      {/* System Icons (Volume, WiFi, Battery, Time) */}
-      <div className="ml-auto flex items-center gap-4">
-        <Volume2 className="w-6 h-6 cursor-pointer hover:text-gray-600 transition-colors duration-150" />
-        <Wifi className="w-6 h-6 cursor-pointer hover:text-gray-600 transition-colors duration-150" />
-        <FaBatteryHalf className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors duration-150" />
-        <div>
-          <div className="text-sm text-black px-2">
-            {currentTime.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </div>
-          <div className="text-sm text-black px-2">
-            {currentTime.toLocaleDateString()}
-          </div>
+      {/* System Icons */}
+      <div className="ml-auto flex items-center gap-2 sm:gap-4 px-1 sm:px-2">
+        <Volume2 className="w-4 h-4 sm:w-6 sm:h-6 cursor-pointer hover:text-gray-600 transition-colors duration-150" />
+        <Wifi className="w-4 h-4 sm:w-6 sm:h-6 cursor-pointer hover:text-gray-600 transition-colors duration-150" />
+        <FaBatteryHalf className="w-4 h-4 sm:w-6 sm:h-6 cursor-pointer hover:text-green-400 transition-colors duration-150" />
+        <div className="text-xs sm:text-sm text-black text-right">
+          <div>{currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+          <div>{currentTime.toLocaleDateString()}</div>
         </div>
       </div>
     </div>

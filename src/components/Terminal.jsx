@@ -1,73 +1,85 @@
-import { MinusIcon, Square } from "lucide-react";
-import React, { useState } from "react";
-import { CgClose } from "react-icons/cg";
+import React, { useState, useEffect, useRef } from "react";
+import { Minus, Maximize2, X } from "lucide-react"; // Using Lucide icons for Windows style
 import { Rnd } from "react-rnd";
 
 const Terminal = ({ onClose }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
-  const [windowSize, setWindowSize] = useState({ width: 600, height: 400 });
+  const [windowSize, setWindowSize] = useState({
+    width: Math.min(600, window.innerWidth - 20),
+    height: Math.min(400, window.innerHeight - 60),
+  });
   const [windowPosition, setWindowPosition] = useState({
-    x: window.innerWidth / 2 - 300,
-    y: window.innerHeight / 2 - 200,
+    x: (window.innerWidth - Math.min(600, window.innerWidth - 20)) / 2,
+    y: (window.innerHeight - Math.min(400, window.innerHeight - 60)) / 2,
   });
   const [command, setCommand] = useState("");
   const [output, setOutput] = useState([]);
-  const [currentPath, setCurrentPath] = useState("/home");
+  const [currentPath, setCurrentPath] = useState("C:\\Users\\Eyuel\\");
+  const terminalBodyRef = useRef(null);
 
-  const taskbarHeight = 48; // Height of the Taskbar
+  const taskbarHeight = 48;
 
-  // Mock directory structure
   const directoryStructure = {
-    home: {
+    "C:\\Users\\Eyuel\\": {
       projects: ["web-app", "mobile-app"],
       documents: ["resume.pdf", "notes.txt"],
       images: ["photo1.jpg", "photo2.png"],
     },
   };
 
-  // Handle minimize
-  const handleMinimize = () => {
-    setIsMinimized(true);
-  };
+  useEffect(() => {
+    if (terminalBodyRef.current) {
+      terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
+    }
+  }, [output]);
 
-  // Handle maximize
-  const handleMaximize = () => {
-    if (isMaximized) {
-      // Restore to default size and position
-      setWindowSize({ width: 600, height: 400 });
+  const handleResize = () => {
+    if (!isMaximized) {
+      const newWidth = Math.min(600, window.innerWidth - 20);
+      const newHeight = Math.min(400, window.innerHeight - taskbarHeight - 20);
+      setWindowSize({ width: newWidth, height: newHeight });
       setWindowPosition({
-        x: window.innerWidth / 2 - 300,
-        y: window.innerHeight / 2 - 200,
+        x: (window.innerWidth - newWidth) / 2,
+        y: (window.innerHeight - newHeight - taskbarHeight) / 2,
       });
     } else {
-      // Maximize to full screen, accounting for the Taskbar height
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight - taskbarHeight,
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight - taskbarHeight });
+      setWindowPosition({ x: 0, y: 0 });
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMaximized]);
+
+  const handleMinimize = () => setIsMinimized(true);
+
+  const handleMaximize = () => {
+    if (isMaximized) {
+      setWindowSize({ width: Math.min(600, window.innerWidth - 20), height: Math.min(400, window.innerHeight - 60) });
+      setWindowPosition({
+        x: (window.innerWidth - Math.min(600, window.innerWidth - 20)) / 2,
+        y: (window.innerHeight - Math.min(400, window.innerHeight - 60) - taskbarHeight) / 2,
       });
+    } else {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight - taskbarHeight });
       setWindowPosition({ x: 0, y: 0 });
     }
     setIsMaximized((prev) => !prev);
   };
 
-  // Handle close
-  const handleClose = () => {
-    onClose(); // Notify the parent component to close the terminal
-  };
+  const handleClose = () => onClose();
 
-  // Handle command input
   const handleCommand = (e) => {
     e.preventDefault();
-
-    // Add the command to the output
     setOutput((prev) => [...prev, `${currentPath}> ${command}`]);
 
-    // Handle commands
     if (command.trim() === "") {
-      // Do nothing if the command is empty
-    } else if (command === "clear") {
-      setOutput([]); // Clear the terminal
+      // Do nothing
+    } else if (command === "cls") { // Changed "clear" to "cls" for Windows CMD
+      setOutput([]);
     } else if (command === "help") {
       setOutput((prev) => [
         ...prev,
@@ -77,17 +89,17 @@ const Terminal = ({ onClose }) => {
         "  projects    -- List my projects",
         "  education   -- Display my education background",
         "  experience  -- Display my work experience",
-        "  clear       -- Clear the terminal",
-        "  ls          -- List files and folders in the current directory",
+        "  cls         -- Clear the terminal",
+        "  dir         -- List files and folders in the current directory",
         "  cd <path>   -- Change directory",
       ]);
     } else if (command === "about") {
       setOutput((prev) => [
         ...prev,
-        "My Name is Eyuel Kassahun \n " +
-          "I am a software engineer and full stack developer \n" +
-          "with expertise in web and mobile app development \n" +
-          "using technologies MERN stack, Python Django, DRF, and Flutter for mobile app development.",
+        "My Name is Eyuel Kassahun",
+        "I am a software engineer and full stack developer",
+        "with expertise in web and mobile app development",
+        "using technologies MERN stack, Python Django, DRF, and Flutter for mobile app development.",
       ]);
     } else if (command === "projects") {
       setOutput((prev) => [
@@ -115,8 +127,8 @@ const Terminal = ({ onClose }) => {
         "  - Backend Instructor & TM at Training Team (2016 - 2 months)",
         "  - Django Developer - Self-experienced (2024 - present)",
       ]);
-    } else if (command === "ls") {
-      const pathParts = currentPath.split("/").filter((part) => part !== "");
+    } else if (command === "dir") { // Changed "ls" to "dir" for Windows CMD
+      const pathParts = currentPath.split("\\").filter((part) => part !== "");
       let currentDir = directoryStructure;
       for (const part of pathParts) {
         currentDir = currentDir[part];
@@ -129,22 +141,15 @@ const Terminal = ({ onClose }) => {
     } else if (command.startsWith("cd")) {
       const path = command.split(" ")[1];
       if (path === "..") {
-        // Navigate back
-        const newPath = currentPath.split("/").slice(0, -1).join("/") || "/home";
+        const newPath = currentPath.split("\\").slice(0, -1).join("\\") || "C:\\Users\\Eyuel";
         setCurrentPath(newPath);
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
-      } else if (
-        directoryStructure[path] &&
-        currentPath === "/home"
-      ) {
-        const newPath = `${currentPath}/${path}`;
+      } else if (directoryStructure[path] && currentPath === "C:\\Users\\Eyuel") {
+        const newPath = `${currentPath}\\${path}`;
         setCurrentPath(newPath);
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
       } else {
-        setOutput((prev) => [
-          ...prev,
-          `Error: No such file or directory: ${path}`,
-        ]);
+        setOutput((prev) => [...prev, `Error: No such file or directory: ${path}`]);
       }
     } else {
       setOutput((prev) => [
@@ -153,8 +158,7 @@ const Terminal = ({ onClose }) => {
         "Type 'help' for a list of available commands.",
       ]);
     }
-
-    setCommand(""); // Clear the input field
+    setCommand("");
   };
 
   return (
@@ -163,75 +167,66 @@ const Terminal = ({ onClose }) => {
       position={{ x: windowPosition.x, y: windowPosition.y }}
       onDragStop={(e, d) => setWindowPosition({ x: d.x, y: d.y })}
       onResizeStop={(e, direction, ref, delta, position) => {
-        setWindowSize({
-          width: ref.style.width,
-          height: ref.style.height,
-        });
+        setWindowSize({ width: parseInt(ref.style.width), height: parseInt(ref.style.height) });
         setWindowPosition(position);
       }}
-      minWidth={400}
-      minHeight={300}
+      minWidth={300}
+      minHeight={200}
+      maxWidth="100vw"
+      maxHeight={`calc(100vh - ${taskbarHeight}px)`}
       bounds="window"
       dragHandleClassName="drag-handle"
-      disableDragging={isMaximized} // Disable dragging when maximized
-      enableResizing={!isMaximized} // Disable resizing when maximized
-      className={`${isMinimized ? "hidden" : ""}`}
+      disableDragging={isMaximized}
+      enableResizing={!isMaximized}
+      className={`z-50 shadow-xl rounded-t-lg overflow-hidden border border-gray-800 ${isMinimized ? "hidden" : ""}`}
     >
-      <div
-        className="w-full h-full bg-gray-700 text-white font-mono border border-gray-800 rounded-lg flex flex-col"
-      >
+      <div className="w-full h-full bg-black text-white font-mono flex flex-col">
         {/* Terminal Header */}
-        <div className="terminal-header drag-handle flex items-center justify-between bg-white text-gray-500 px-3 py-1">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-gray-700 rounded-full"></div>
-            <span className="text-sm text-gray-700">Command Prompt</span>
-          </div>
-          <div className="flex space-x-2 gap-2">
+        <div className="drag-handle flex items-center justify-between bg-gray-800 px-2 sm:px-3 py-1 sm:py-1.5 border-b border-gray-700">
+          <span className="text-xs sm:text-sm text-gray-300">C:\Windows\System32\cmd.exe</span>
+          <div className="flex space-x-1 sm:space-x-2">
             <button
               onClick={handleMinimize}
-              className="w-6 h-6 text-sm flex items-center justify-center rounded"
+              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded hover:bg-gray-700 text-gray-300 transition-colors duration-150"
               title="Minimize"
             >
-              <MinusIcon size={25} />
+              <Minus size={14} className="sm:size-16" />
             </button>
             <button
               onClick={handleMaximize}
-              className="w-6 h-6 text-sm flex items-center justify-center rounded"
-              title="Maximize"
+              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded hover:bg-gray-700 text-gray-300 transition-colors duration-150"
+              title="Maximize/Restore"
             >
-              <Square />
+              <Maximize2 size={14} className="sm:size-16" />
             </button>
             <button
               onClick={handleClose}
-              className="w-6 h-6 text-sm flex items-center justify-center rounded"
+              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded hover:bg-red-600 text-gray-300 transition-colors duration-150"
               title="Close"
             >
-              <CgClose size={25} />
+              <X size={14} className="sm:size-16" />
             </button>
           </div>
         </div>
 
         {/* Terminal Body */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div
+          ref={terminalBodyRef}
+          className="flex-1 overflow-y-auto p-2 sm:p-3 lg:p-4 text-xs sm:text-sm lg:text-base"
+        >
           {output.map((line, index) => (
-            <div className="text-gray-100" key={index}>
+            <div className="text-gray-200 break-words" key={index}>
               {line}
             </div>
           ))}
-
-          {/* Current Input Line */}
-          <div className="flex items-center">
-            {currentPath}&gt;{" "}
+          <div className="flex items-center mt-1">
+            <span className="text-gray-300">{currentPath} </span>
             <input
               type="text"
               value={command}
               onChange={(e) => setCommand(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleCommand(e);
-                }
-              }}
-              className="bg-transparent text-white outline-none w-full inline"
+              onKeyDown={(e) => e.key === "Enter" && handleCommand(e)}
+              className="bg-transparent text-white outline-none flex-1"
               autoFocus
             />
           </div>
