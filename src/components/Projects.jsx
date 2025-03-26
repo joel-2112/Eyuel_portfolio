@@ -44,7 +44,7 @@ const Projects = () => {
     <div id="projects" className="w-full py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Column: Heading & Description */}
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col ">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
             My Projects
           </h2>
