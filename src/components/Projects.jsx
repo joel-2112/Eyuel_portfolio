@@ -1,34 +1,44 @@
 import React from "react";
 import { FaGithub } from "react-icons/fa"; // GitHub icon
-
+import ethioexplore from "../assets/images/ethioexplore.jpg"
+import  internhub from "../assets/images/internhub.jpg"
+import  GbiGubae from "../assets/images/gbigubae.jpg"
+import  JoGem from "../assets/images/jogem.jpg"
 // Sample project data (replace with your actual projects)
 const projects = [
   {
-    title: "Portfolio Website",
-    image: "https://via.placeholder.com/300x200", // Replace with actual image
+    title: "Intern Hub",
+    image: internhub, // Replace with actual image
     duration: "2 months",
-    description: "A personal portfolio showcasing my skills and projects with a modern UI.",
-    tech: ["#React", "#TailwindCSS", "#Node.js"],
-    github: "https://github.com/yourusername/portfolio",
+    description: "Internship posting portal, with jwt authentication and role based access control",
+    tech: ["#React", "#TailwindCSS", "#Express.js","#Mongodb", "#Node.js,"],
+    github: "https://github.com/joel-2112/Intern-Hub",
   },
   {
-    title: "E-commerce Platform",
-    image: "https://via.placeholder.com/300x200",
+    title: "EthioExplore",
+    image: ethioexplore,
     duration: "3 months",
-    description: "A fully functional e-commerce site with payment integration and user authentication.",
+    description: "A fully functional Tourism web app  with  user authentication and role based access control.",
     tech: ["#React", "#Express", "#MongoDB"],
-    github: "https://github.com/yourusername/ecommerce",
+    github: "https://github.com/joel-2112/Tourism",
   },
   {
-    title: "Task Manager App",
-    image: "https://via.placeholder.com/300x200",
-    duration: "1 month",
-    description: "A simple task management app with real-time updates and responsive design.",
-    tech: ["#Vue.js", "#Firebase"],
-    github: "https://github.com/yourusername/task-manager",
+    title: "GbiGubae",
+    image: GbiGubae,
+    duration: "1 year",
+    description: " a A flutter mobile app developed for GibiGubae collaborating with my colleagues",
+    tech: ["#Flutter", "#Flutter", "#Firebase"],
+    github: GbiGubae,
+  },
+  {
+    title: "JoGem",
+    image: JoGem,
+    duration: "3 day ",
+    description: " a A flutter mobile app developed with flutter and gemini ai free api integrated",
+    tech: ["#Flutter","#gemini",  "#Provider"],
+    github: "https://github.com/joel-2112/JoGem",
   },
 ];
-
 const Projects = () => {
   return (
     <div id="projects" className="w-full py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -53,7 +63,6 @@ const Projects = () => {
             </span>
           </div>
         </div>
-
         {/* Right Column: Project Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {projects.map((project, index) => (
@@ -113,5 +122,4 @@ const Projects = () => {
     </div>
   );
 };
-
 export default Projects;
