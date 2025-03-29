@@ -144,7 +144,7 @@ const Taskbar = ({ onTerminalToggle, onExplorerToggle }) => {
                     <span>{suggestion.name}</span>
                   </a>
                 </li>
-              ))}
+              ))}c
             </ul>
           </div>
         )}

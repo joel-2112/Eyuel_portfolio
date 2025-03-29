@@ -150,7 +150,7 @@ const Explorer = ({ onClose, newPath }) => {
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar */}
           <div
-            className="w-1/3 sm:w-1/4 md:w-1/5 lg:w-1/6 min-w-[150px] max-w-[300px] bg-white border-r border-gray-200 overflow-y-auto transition-all duration-200"
+            className="w-1/3 sm:w-1/4 md:w-1/5 lg:w-1/6 min-w-[250px] max-w-[300px] bg-white border-r border-gray-200 overflow-y-auto transition-all duration-200"
             style={{ flexShrink: 0 }}
           >
             <Sidebar
