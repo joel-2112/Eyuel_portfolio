@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Minus, Maximize2, X } from "lucide-react"; // Using Lucide icons for Windows style
+import { Minus, Square, X } from "lucide-react"; // Updated icons for Windows 11 style
 import { Rnd } from "react-rnd";
 
 const Terminal = ({ onClose }) => {
@@ -15,13 +15,13 @@ const Terminal = ({ onClose }) => {
   });
   const [command, setCommand] = useState("");
   const [output, setOutput] = useState([]);
-  const [currentPath, setCurrentPath] = useState("C:\\Users\\Eyuel\\");
+  const [currentPath, setCurrentPath] = useState("C:\\Users\\Eyuel");
   const terminalBodyRef = useRef(null);
 
   const taskbarHeight = 48;
 
   const directoryStructure = {
-    "C:\\Users\\Eyuel\\": {
+    "C:\\Users\\Eyuel": {
       projects: ["web-app", "mobile-app"],
       documents: ["resume.pdf", "notes.txt"],
       images: ["photo1.jpg", "photo2.png"],
@@ -74,24 +74,24 @@ const Terminal = ({ onClose }) => {
 
   const handleCommand = (e) => {
     e.preventDefault();
-    setOutput((prev) => [...prev, `${currentPath}> ${command}`]);
-
+    setOutput((prev) => [...prev, `${currentPath}>${command}`]); // Removed extra space after ">"
+    
     if (command.trim() === "") {
       // Do nothing
-    } else if (command === "cls") { // Changed "clear" to "cls" for Windows CMD
+    } else if (command === "cls") {
       setOutput([]);
     } else if (command === "help") {
       setOutput((prev) => [
         ...prev,
         "Available commands:",
         "___________________",
-        "  about       -- Display information about me",
-        "  projects    -- List my projects",
-        "  education   -- Display my education background",
-        "  experience  -- Display my work experience",
-        "  cls         -- Clear the terminal",
-        "  dir         -- List files and folders in the current directory",
-        "  cd <path>   -- Change directory",
+        "  about       Display information about me",
+        "  projects    List my projects",
+        "  education   Display my education background",
+        "  experience  Display my work experience",
+        "  cls         Clear the terminal",
+        "  dir         List files and folders in the current directory",
+        "  cd <path>   Change directory",
       ]);
     } else if (command === "about") {
       setOutput((prev) => [
@@ -127,7 +127,7 @@ const Terminal = ({ onClose }) => {
         "  - Backend Instructor & TM at Training Team (2016 - 2 months)",
         "  - Django Developer - Self-experienced (2024 - present)",
       ]);
-    } else if (command === "dir") { // Changed "ls" to "dir" for Windows CMD
+    } else if (command === "dir") {
       const pathParts = currentPath.split("\\").filter((part) => part !== "");
       let currentDir = directoryStructure;
       for (const part of pathParts) {
@@ -142,24 +142,26 @@ const Terminal = ({ onClose }) => {
       const path = command.split(" ")[1];
       if (path === "..") {
         const newPath = currentPath.split("\\").slice(0, -1).join("\\") || "C:\\Users\\Eyuel";
-        setCurrentPath(newPath);
+        setCurrentPath(newPath + (newPath.endsWith("\\") ? "" : "\\")); // Ensure trailing backslash
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
-      } else if (directoryStructure[path] && currentPath === "C:\\Users\\Eyuel") {
+      } else if (directoryStructure[`${currentPath}\\${path}`]) {
         const newPath = `${currentPath}\\${path}`;
         setCurrentPath(newPath);
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
       } else {
-        setOutput((prev) => [...prev, `Error: No such file or directory: ${path}`]);
+        setOutput((prev) => [...prev, `'${command}' is not recognized as an internal or external command,`]);
       }
     } else {
       setOutput((prev) => [
         ...prev,
-        `Command not found: ${command}`,
-        "Type 'help' for a list of available commands.",
+        `'${command}' is not recognized as an internal or external command,`,
+        "operable program or batch file.",
       ]);
     }
     setCommand("");
   };
+
+  if (isMinimized) return null;
 
   return (
     <Rnd
@@ -178,33 +180,33 @@ const Terminal = ({ onClose }) => {
       dragHandleClassName="drag-handle"
       disableDragging={isMaximized}
       enableResizing={!isMaximized}
-      className={`z-50 shadow-xl rounded-t-lg overflow-hidden border border-gray-800 ${isMinimized ? "hidden" : ""}`}
+      className="z-50 shadow-md rounded-t-md overflow-hidden border border-gray-600"
     >
-      <div className="w-full h-full bg-black text-white font-mono flex flex-col">
+      <div className="w-full h-full bg-black text-white font-[Consolas,'Courier New',monospace] flex flex-col">
         {/* Terminal Header */}
-        <div className="drag-handle flex items-center justify-between bg-gray-800 px-2 sm:px-3 py-1 sm:py-1.5 border-b border-gray-700">
-          <span className="text-xs sm:text-sm text-gray-300">C:\Windows\System32\cmd.exe</span>
-          <div className="flex space-x-1 sm:space-x-2">
+        <div className="drag-handle flex items-center justify-between bg-[#1A1A1A] px-3 py-1.5 border-b border-gray-700">
+          <span className="text-sm text-white">Command Prompt</span>
+          <div className="flex space-x-2">
             <button
               onClick={handleMinimize}
-              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded hover:bg-gray-700 text-gray-300 transition-colors duration-150"
+              className="w-6 h-6 flex items-center justify-center hover:bg-gray-600 text-white transition-colors duration-150"
               title="Minimize"
             >
-              <Minus size={14} className="sm:size-16" />
+              <Minus size={16} />
             </button>
             <button
               onClick={handleMaximize}
-              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded hover:bg-gray-700 text-gray-300 transition-colors duration-150"
+              className="w-6 h-6 flex items-center justify-center hover:bg-gray-600 text-white transition-colors duration-150"
               title="Maximize/Restore"
             >
-              <Maximize2 size={14} className="sm:size-16" />
+              <Square size={16} /> {/* Square icon for maximize/restore */}
             </button>
             <button
               onClick={handleClose}
-              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded hover:bg-red-600 text-gray-300 transition-colors duration-150"
+              className="w-6 h-6 flex items-center justify-center hover:bg-red-600 text-white transition-colors duration-150"
               title="Close"
             >
-              <X size={14} className="sm:size-16" />
+              <X size={16} />
             </button>
           </div>
         </div>
@@ -212,21 +214,24 @@ const Terminal = ({ onClose }) => {
         {/* Terminal Body */}
         <div
           ref={terminalBodyRef}
-          className="flex-1 overflow-y-auto p-2 sm:p-3 lg:p-4 text-xs sm:text-sm lg:text-base"
+          className="flex-1 overflow-y-auto p-3 text-sm"
         >
+          <div className="text-white">Microsoft Windows [Version 11.x.x.xxx]</div>
+          <div className="text-white">(c) Microsoft Corporation. All rights reserved.</div>
+          <div className="text-white">&nbsp;</div> {/* Empty line */}
           {output.map((line, index) => (
-            <div className="text-gray-200 break-words" key={index}>
+            <div className="text-white break-words" key={index}>
               {line}
             </div>
           ))}
           <div className="flex items-center mt-1">
-            <span className="text-gray-300">{currentPath} </span>
+            <span className="text-white">{currentPath}&gt;</span> {/* Windows CMD uses ">" */}
             <input
               type="text"
               value={command}
               onChange={(e) => setCommand(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleCommand(e)}
-              className="bg-transparent text-white outline-none flex-1"
+              className="bg-black text-white outline-none flex-1 border-none caret-white"
               autoFocus
             />
           </div>
