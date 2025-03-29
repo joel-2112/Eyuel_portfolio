@@ -216,7 +216,7 @@ const Terminal = ({ onClose }) => {
           ref={terminalBodyRef}
           className="flex-1 overflow-y-auto p-3 text-sm"
         >
-          <div className="text-white">Microsoft Windows [Version 11.x.x.xxx]</div>
+          <div className="text-white">Microsoft Windows [Version 10]</div>
           <div className="text-white">(c) Microsoft Corporation. All rights reserved.</div>
           <div className="text-white">&nbsp;</div> {/* Empty line */}
           {output.map((line, index) => (
