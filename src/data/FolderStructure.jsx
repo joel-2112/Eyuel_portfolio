@@ -121,5 +121,4 @@ export const folderStructure = [
         { name: "example.txt", type: "file", path: ExampleTXT },
       ],
     },
-    { name: "Network", type: "folder", children: [] },
   ];
