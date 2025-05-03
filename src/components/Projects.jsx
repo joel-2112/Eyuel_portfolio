@@ -2,10 +2,9 @@ import React from "react";
 import { FaGithub } from "react-icons/fa"; // GitHub icon
 import ethioexplore from "../assets/images/ethioexplore.jpg"
 import  internhub from "../assets/images/internhub.jpg"
-import  dashboard from "../assets/images/dashboard.png"
+import  dashboard from "../assets/images/dashboard.jpg"
 import  GbiGubae from "../assets/images/gbigubae.jpg"
 import  JoGem from "../assets/images/jogem.jpg"
-// Sample project data (replace with your actual projects)
 const projects = [
   {
     title: "Gainhopes",
