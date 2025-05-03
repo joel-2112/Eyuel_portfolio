@@ -7,6 +7,14 @@ import  JoGem from "../assets/images/jogem.jpg"
 // Sample project data (replace with your actual projects)
 const projects = [
   {
+    title: "Gainhopes",
+    image: internhub, // Replace with actual image
+    duration: "2 months",
+    description: "Is a website with its own CMS admin panel, where admin can manage all the content of the website.",
+    tech: ["#React", "#TailwindCSS", "#Express.js","#Mongodb", "#Mysql","#Node.js,"],
+    github: "https://gainhopes.org.et",
+  },
+  {
     title: "Intern Hub",
     image: internhub, // Replace with actual image
     duration: "2 months",
