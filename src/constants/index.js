@@ -156,15 +156,15 @@ import {
         "Integrated third-party APIs to enhance application functionality and user experience.",],
     },
     {
-      title: "Laravel Developer",
+      title: "Mobile App Developer",
       company_name: "Gerizan Technology plc",
       icon: "GT",
       iconBg: "#E6DEDD",
       date: "Feb 2025 - Present",
       points: [
-        "Developed and maintained web applications using Laravel, PHP, and MySQL.",
+        "Developed and maintained Mobile applications using Laravel, PHP, and MySQL.",
         "Collaborated with cross-functional teams to design and implement new features and enhancements.",
-        "integrate with flutter and develope delivery app",
+        "integrate with flutter and develope delivery app, dinein delivery app, and ecommerce app.",
         "Developed RESTful APIs to support web and mobile applications.",
 
       ],
