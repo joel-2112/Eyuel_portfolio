@@ -23,6 +23,7 @@
     "react-rnd": "^10.4.14",
     "react-router-dom": "^7.1.5",
     "react-tilt": "^1.0.2",
+    "react-tsparticles": "^2.12.2",
     "react-vertical-timeline-component": "^3.5.3",
     "three": "^0.173.0"
   },
