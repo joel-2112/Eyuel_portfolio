@@ -100,7 +100,9 @@ const Projects = () => {
 
               {/* Card Content */}
               <div className="p-4 relative z-10">
-                <h3 className="text-xl font-semibold text-indigo-900 mb-1">{project.title}</h3>
+                <h3 className="text-xl font-semibold text-indigo-900 mb-1">
+                  {project.title}
+                </h3>
                 <p className="text-sm text-gray-500 mb-2">{project.duration}</p>
                 <p className="text-sm text-gray-600 line-clamp-2">
                   {project.description}
@@ -110,7 +112,7 @@ const Projects = () => {
                   {project.tech.map((tag, idx) => (
                     <span
                       key={idx}
-                      className="text-xs font-medium px-2 py-1 rounded-full bg-indigo-100 text-indigo-800"
+                      className="text-xs font-medium px-2 py-1 rounded-full bg-white text-indigo-800"
                     >
                       {tag}
                     </span>
@@ -120,16 +122,40 @@ const Projects = () => {
                 {/* Links */}
                 <div className="mt-3 flex flex-col gap-2">
                   <div className="flex items-center justify-between">
-                    <a href={project.github} className="text-xs font-medium text-indigo-700">
+                    <a
+                      href={project.github}
+                      className="text-xs font-medium text-indigo-700"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Github Repository
                     </a>
-                    <FaGithub className="w-5 h-5 text-indigo-700" />
+                    <a
+                      href={project.github}
+                      className="text-xs font-medium text-indigo-700"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaGithub className="w-5 h-5 text-indigo-700" />
+                    </a>
                   </div>
                   <div className="flex items-center justify-between">
-                    <a href={project.github} className="text-xs font-medium text-indigo-700">
+                    <a
+                      href={project.github}
+                      className="text-xs font-medium text-indigo-700"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Live Demo
                     </a>
-                    <FaLink className="w-5 h-5 text-indigo-700" />
+                    <a
+                      href={project.github}
+                      className="text-xs font-medium text-indigo-700"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaLink className="w-5 h-5 text-indigo-700" />
+                    </a>
                   </div>
                 </div>
               </div>
