@@ -79,7 +79,7 @@ const About = () => {
             className="w-full sm:w-80"
           >
             <Tilt options={{ max: 35, scale: 1.1, glare: true, "max-glare": 0.6 }}>
-              <div className="relative bg-white rounded-xl p-6 h-72 flex flex-col items-center justify-center border-2 border-indigo-100 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
+              <div className="relative bg-white  rounded-xl p-6 h-72 flex flex-col items-center justify-center border-2 border-indigo-300 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-indigo-100 via-white to-indigo-50 opacity-50 animate-pulse-slow" />
                 <div className="relative z-10 text-indigo-600 text-5xl mb-6 transition-transform duration-300 hover:scale-110">
                   {service.icon}
