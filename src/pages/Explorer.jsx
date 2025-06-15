@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Rnd } from "react-rnd";
 import Sidebar from "../components/Sidebar";
 import TopNav from "../components/TopNav";
-import Content from "../components/Content";
+import Content from "../components/content";
 import { folderStructure } from "../data/FolderStructure";
 
 const Explorer = ({ onClose, newPath }) => {
