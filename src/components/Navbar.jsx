@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa"; // Importing menu and close icons
-import image from "../assets/image.png";
+import { FaBars, FaTimes } from "react-icons/fa";
+import logo from "../assets/owl.png";
 import { navLinks } from "../constants/index";
 
 const Navbar = () => {
@@ -18,7 +18,9 @@ const Navbar = () => {
   return (
     <nav
       className={`w-full fixed top-0 z-30 flex items-center py-4 px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
-        scrolled ? "bg-white shadow-md" : "bg-transparent"
+        scrolled
+          ? "backdrop-blur-xl bg-white/30 shadow-lg shadow-blue-500/30"
+          : "bg-transparent"
       }`}
     >
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
@@ -32,9 +34,9 @@ const Navbar = () => {
           }}
         >
           <img
-            src={image}
+            src={logo}
             alt="logo"
-            className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full border-2 border-blue-100 group-hover:border-blue-300 transition-all duration-300"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full border-2 border-blue-200 group-hover:border-blue-400 transition-all duration-300 shadow-md shadow-blue-500/20"
           />
           <p
             className={`font-bold text-xl sm:text-2xl tracking-tight ${
@@ -57,7 +59,7 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <li
               key={link.id}
-              className={`relative text-base lg:text-lg font-medium ${
+              className={`relative text-base lg:text-lg font-medium cursor-pointer ${
                 active === link.title
                   ? "text-blue-600"
                   : "text-gray-600 hover:text-blue-600"
@@ -90,7 +92,7 @@ const Navbar = () => {
           <div
             className={`${
               toggle ? "block" : "hidden"
-            } absolute top-16 right-4 bg-white w-56 p-6 rounded-xl shadow-xl border border-gray-100 transition-all duration-300`}
+            } absolute top-16 right-4 bg-white/80 backdrop-blur-lg w-56 p-6 rounded-xl shadow-xl border border-gray-100 transition-all duration-300`}
           >
             <ul className="flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -111,6 +113,11 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Radial Glow */}
+      {scrolled && (
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle,_rgba(255,255,255,0.15)_0%,_rgba(59,130,246,0.2)_60%,_transparent_100%)] blur-xl opacity-70 transition-opacity duration-500"></div>
+      )}
     </nav>
   );
 };

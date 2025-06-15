@@ -44,7 +44,10 @@ const Terminal = ({ onClose }) => {
         y: (window.innerHeight - newHeight - taskbarHeight) / 2,
       });
     } else {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight - taskbarHeight });
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight - taskbarHeight,
+      });
       setWindowPosition({ x: 0, y: 0 });
     }
   };
@@ -58,13 +61,23 @@ const Terminal = ({ onClose }) => {
 
   const handleMaximize = () => {
     if (isMaximized) {
-      setWindowSize({ width: Math.min(600, window.innerWidth - 20), height: Math.min(400, window.innerHeight - 60) });
+      setWindowSize({
+        width: Math.min(600, window.innerWidth - 20),
+        height: Math.min(400, window.innerHeight - 60),
+      });
       setWindowPosition({
         x: (window.innerWidth - Math.min(600, window.innerWidth - 20)) / 2,
-        y: (window.innerHeight - Math.min(400, window.innerHeight - 60) - taskbarHeight) / 2,
+        y:
+          (window.innerHeight -
+            Math.min(400, window.innerHeight - 60) -
+            taskbarHeight) /
+          2,
       });
     } else {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight - taskbarHeight });
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight - taskbarHeight,
+      });
       setWindowPosition({ x: 0, y: 0 });
     }
     setIsMaximized((prev) => !prev);
@@ -75,7 +88,7 @@ const Terminal = ({ onClose }) => {
   const handleCommand = (e) => {
     e.preventDefault();
     setOutput((prev) => [...prev, `${currentPath}>${command}`]); // Removed extra space after ">"
-    
+
     if (command.trim() === "") {
       // Do nothing
     } else if (command === "cls") {
@@ -84,48 +97,60 @@ const Terminal = ({ onClose }) => {
       setOutput((prev) => [
         ...prev,
         "Available commands:",
-        "___________________",
-        "  about       Display information about me",
-        "  projects    List my projects",
-        "  education   Display my education background",
-        "  experience  Display my work experience",
-        "  cls         Clear the terminal",
-        "  dir         List files and folders in the current directory",
-        "  cd <path>   Change directory",
+        "--------------------",
+        "  about  --     Display information about me",
+        "  projects  --  List my projects",
+        "  education  -- Display my education background",
+        "  experience -- Display my work experience",
+        "  cls    --     Clear the terminal",
+        "  dir      --   List files and folders in the current directory",
+        "  cd <path> --  Change directory",
       ]);
     } else if (command === "about") {
       setOutput((prev) => [
         ...prev,
+        "About Me:",
+        "----------------",
         "My Name is Eyuel Kassahun",
         "I am a software engineer and full stack developer",
         "with expertise in web and mobile app development",
-        "using technologies MERN stack, Python Django, DRF, and Flutter for mobile app development.",
+        "using technologies MERN stack, Python Django, DRF, and Flutter for mobile app development. CI/CD piplines with GitHub Actions and Docker.",
+        "-----------------",
       ]);
     } else if (command === "projects") {
       setOutput((prev) => [
         ...prev,
         "My projects:",
-        "___________________",
-        "  - Web App: EthioExplore, Athlix, TechTalk, InternHub",
+        "----------------",
+        "  - Web App: EthioExplore, Athlix, TechTalk, InternHub, gainhopes.org.et, teamworcsc.com",
         "  - Mobile App: DoMore, GebiGubae, JoelGPT, EthioExplore, GESH-Delivery",
+        "----------------",
+        "For more details, visit my GitHub profile:",
+        " https://github.com/joel-2112",
+        "----------------",
       ]);
     } else if (command === "education") {
       setOutput((prev) => [
         ...prev,
         "Education:",
-        "_________________",
+        "----------------",
         "  - Bachelor of Science in Software Engineering",
-        "  - Experienced Software Developer",
+        "  - with 3.74 CGPA and 71% in national exit exam",
+        "  - from Bahir Dar University(BIT) (2019-2024)",
+        "----------------",
       ]);
     } else if (command === "experience") {
       setOutput((prev) => [
         ...prev,
         "Work Experience:",
-        "_________________",
+        "----------------",
         "  - MERN stack developer at STC (4 months)",
-        "  - Flutter Developer at BIT (2022-2024)",
-        "  - Backend Instructor & TM at Training Team (2016 - 2 months)",
-        "  - Django Developer - Self-experienced (2024 - present)",
+        "  - Flutter Developer at BIT (1 year)",
+        "  - Backend Instructor & TM at Training Team (2 months)",
+        "  - Django Developer - prodigy Info Tech(1 month)",
+        "  - Flutter Developer at Gerizan Technology Plc (2 months)",
+        "  - Backend Developer at Teamwork IT solution  Plc (Currently)",
+        "----------------",
       ]);
     } else if (command === "dir") {
       const pathParts = currentPath.split("\\").filter((part) => part !== "");
@@ -141,7 +166,8 @@ const Terminal = ({ onClose }) => {
     } else if (command.startsWith("cd")) {
       const path = command.split(" ")[1];
       if (path === "..") {
-        const newPath = currentPath.split("\\").slice(0, -1).join("\\") || "C:\\Users\\Eyuel";
+        const newPath =
+          currentPath.split("\\").slice(0, -1).join("\\") || "C:\\Users\\Eyuel";
         setCurrentPath(newPath + (newPath.endsWith("\\") ? "" : "\\")); // Ensure trailing backslash
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
       } else if (directoryStructure[`${currentPath}\\${path}`]) {
@@ -149,13 +175,16 @@ const Terminal = ({ onClose }) => {
         setCurrentPath(newPath);
         setOutput((prev) => [...prev, `Navigated to ${newPath}`]);
       } else {
-        setOutput((prev) => [...prev, `'${command}' is not recognized as an internal or external command,`]);
+        setOutput((prev) => [
+          ...prev,
+          `'${command}' is not recognized as an internal or external command,`,
+        ]);
       }
     } else {
       setOutput((prev) => [
         ...prev,
         `'${command}' is not recognized as an internal or external command,`,
-        "operable program or batch file.",
+        "pls type 'help' for a list of available commands.",
       ]);
     }
     setCommand("");
@@ -169,7 +198,10 @@ const Terminal = ({ onClose }) => {
       position={{ x: windowPosition.x, y: windowPosition.y }}
       onDragStop={(e, d) => setWindowPosition({ x: d.x, y: d.y })}
       onResizeStop={(e, direction, ref, delta, position) => {
-        setWindowSize({ width: parseInt(ref.style.width), height: parseInt(ref.style.height) });
+        setWindowSize({
+          width: parseInt(ref.style.width),
+          height: parseInt(ref.style.height),
+        });
         setWindowPosition(position);
       }}
       minWidth={300}
@@ -217,7 +249,9 @@ const Terminal = ({ onClose }) => {
           className="flex-1 overflow-y-auto p-3 text-sm"
         >
           <div className="text-white">Microsoft Windows [Version 10]</div>
-          <div className="text-white">(c) Microsoft Corporation. All rights reserved.</div>
+          <div className="text-white">
+            (c) Microsoft Corporation. All rights reserved.
+          </div>
           <div className="text-white">&nbsp;</div> {/* Empty line */}
           {output.map((line, index) => (
             <div className="text-white break-words" key={index}>
@@ -225,7 +259,8 @@ const Terminal = ({ onClose }) => {
             </div>
           ))}
           <div className="flex items-center mt-1">
-            <span className="text-white">{currentPath}&gt;</span> {/* Windows CMD uses ">" */}
+            <span className="text-white">{currentPath}&gt;</span>{" "}
+            {/* Windows CMD uses ">" */}
             <input
               type="text"
               value={command}

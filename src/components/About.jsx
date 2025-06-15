@@ -82,15 +82,7 @@ const About = () => {
           transition={{ duration: 1.2, delay: 0.4 }}
         >
           Hey, I’m Eyuel — a Full-Stack Developer & Creative Technologist who
-          loves to build more than just apps — I build experiences. I specialize
-          in Django, React, Flutter, and Node.js, blending clean code with bold
-          design. Lately, I’ve been diving into 3D web spaces with Three.js,
-          bringing interfaces to life in new, interactive ways. I’m passionate
-          about telling stories through technology, often inspired by Ethiopian
-          culture, landscapes, and innovation. Whether it’s cross-platform web
-          apps, mobile experiences, or immersive portfolios, I aim to create
-          solutions that stand out and inspire. Let’s build something remarkable
-          together 🚀
+          loves to build more than just apps I develop software like an owl flies — quietly, precisely, and with a wide field of vision. I specialize in solving complex problems that often hide in the shadows of system design, bringing silent performance and elegant solutions into the spotlight.
         </motion.p>
         <motion.a
           href="#contact"

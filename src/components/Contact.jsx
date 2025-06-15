@@ -87,7 +87,7 @@ const Contact = () => {
   return (
     <div
       id="contact"
-      className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-indigo-50 to-white py-12 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-indigo-50 to-white py-12 px-4 sm:px-6 lg:px-24 overflow-hidden"
     >
       <motion.div
         className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 transition-all duration-300"

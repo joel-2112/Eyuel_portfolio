@@ -65,7 +65,7 @@ const Projects = () => {
   return (
     <div
       id="projects"
-      className="w-full py-12 px-4 sm:px-6 lg:px-8 bg-gray-100 text-gray-800"
+      className="w-full py-12 px-4 sm:px-6 lg:px-24 bg-gray-100 text-gray-800"
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
