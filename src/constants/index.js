@@ -160,12 +160,27 @@ import {
       company_name: "Gerizan Technology plc",
       icon: "GT",
       iconBg: "#E6DEDD",
-      date: "Feb 2025 - Present",
+      date: "Feb 2025 - apr-2025",
       points: [
         "Developed and maintained Mobile applications using Laravel, PHP, and MySQL.",
         "Collaborated with cross-functional teams to design and implement new features and enhancements.",
         "integrate with flutter and develope delivery app, dinein delivery app, and ecommerce app.",
         "Developed RESTful APIs to support web and mobile applications.",
+
+      ],
+    },
+    {
+      title: "Backend Developer",
+      company_name: "Teamwork IT solution PLc",
+      icon: "TW",
+      iconBg: "#E6DEDD",
+      date: "may 2025 - Present",
+      points: [
+        "Design , develop and deploy REST APIs with Node.js and Express.js, ensuring high performance and responsiveness to requests.",
+        "Developed and maintained backend systems using Node.js, Express.js, and Postgresql.",
+        "Implemented authentication and authorization mechanisms to secure web applications and APIs.",
+        "Collaborated with cross-functional teams to design and implement new features and enhancements.",
+        "Integrating CI/CD pipelines to automate deployment processes and improve development efficiency.",
 
       ],
     },
